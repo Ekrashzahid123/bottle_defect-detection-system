@@ -97,15 +97,94 @@ def main():
     loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
     model.compile(optimizer=optimizer, loss=loss_fn, metrics=["accuracy"])
     
+class SafeModelCheckpoint(tf.keras.callbacks.Callback):
+    def __init__(self, filepath, monitor="val_accuracy", mode="max"):
+        super().__init__()
+        self.filepath = os.path.abspath(filepath)
+        self.monitor = monitor
+        self.mode = mode
+        self.best_score = -float("inf") if mode == "max" else float("inf")
+
+    def on_epoch_end(self, epoch, logs=None):
+        logs = logs or {}
+        val = logs.get(self.monitor)
+        if val is None:
+            return
+        is_best = (val >= self.best_score) if self.mode == "max" else (val <= self.best_score)
+        if is_best:
+            self.best_score = val
+            tmp_path = self.filepath + ".tmp.keras"
+            try:
+                self.model.save(tmp_path)
+                if os.path.exists(self.filepath):
+                    try:
+                        os.remove(self.filepath)
+                    except Exception:
+                        pass
+                if os.path.exists(tmp_path):
+                    os.replace(tmp_path, self.filepath)
+                print(f"\nEpoch {epoch+1}: {self.monitor} reached {val:.5f}, saved best checkpoint.")
+            except Exception as e:
+                try:
+                    self.model.save(self.filepath)
+                except Exception as ex:
+                    print(f"\n[!] Warning: Model save exception: {ex}")
+
+def main():
+    args = parse_args()
+    os.makedirs(args.output_dir, exist_ok=True)
+    
+    tf.random.set_seed(args.seed)
+    np.random.seed(args.seed)
+    
+    print(f"[*] TensorFlow Version: {tf.__version__}")
+    
+    # 1. Load Dataset
+    train_ds, val_ds, test_ds, class_weights, split_paths, split_labels = get_data_loaders(
+        dataset_root=args.dataset_root,
+        batch_size=args.batch_size,
+        img_size=args.img_size,
+        seed=args.seed,
+        use_direct_split=True
+    )
+    
+    print(f"[*] Dataset Split Statistics:")
+    print(f"    - Train Set:      {len(split_paths['train'])} samples (Normal: {sum(1 for l in split_labels['train'] if l==0)}, Defective: {sum(1 for l in split_labels['train'] if l==1)})")
+    print(f"    - Validation Set: {len(split_paths['valid'])} samples (Normal: {sum(1 for l in split_labels['valid'] if l==0)}, Defective: {sum(1 for l in split_labels['valid'] if l==1)})")
+    print(f"    - Test Set:       {len(split_paths['test'])} samples (Normal: {sum(1 for l in split_labels['test'] if l==0)}, Defective: {sum(1 for l in split_labels['test'] if l==1)})")
+    print(f"[*] Balanced Class Weights: {class_weights}")
+    
+    # Save split manifest for reproducible evaluation
+    split_info_path = os.path.join(args.output_dir, "split_manifest.json")
+    with open(split_info_path, "w") as f:
+        json.dump({
+            "train_samples": len(split_paths["train"]),
+            "valid_samples": len(split_paths["valid"]),
+            "test_samples": len(split_paths["test"]),
+            "split_paths": split_paths,
+            "split_labels": split_labels
+        }, f, indent=2)
+    print(f"[*] Saved Split Manifest to: {split_info_path}")
+
+    # 2. Build Model
+    model = create_model(
+        num_classes=len(CLASS_NAMES),
+        variant=args.variant,
+        dropout=0.25,
+        input_shape=(args.img_size, args.img_size, 3)
+    )
+
+    optimizer = tf.keras.optimizers.Adam(learning_rate=args.lr)
+    loss_fn = tf.keras.losses.SparseCategoricalCrossentropy()
+    model.compile(optimizer=optimizer, loss=loss_fn, metrics=["accuracy"])
+    
     # 3. Callbacks
     best_model_path = os.path.join(args.output_dir, "best_model.keras")
     callbacks = [
-        tf.keras.callbacks.ModelCheckpoint(
+        SafeModelCheckpoint(
             filepath=best_model_path,
             monitor="val_accuracy",
-            mode="max",
-            save_best_only=True,
-            verbose=1
+            mode="max"
         ),
         tf.keras.callbacks.ReduceLROnPlateau(
             monitor="val_loss",
@@ -118,7 +197,7 @@ def main():
     
     # 4. Train
     print("\n" + "=" * 65)
-    print("      TRAINING TENSORFLOW MOBILENETV3 (LEAK-FREE SPLIT)")
+    print("      TRAINING TENSORFLOW MOBILENETV3 ON BOTTLE DEFECT DATASET")
     print("=" * 65)
     
     start_time = time.time()
@@ -131,8 +210,12 @@ def main():
         verbose=1
     )
     total_time = time.time() - start_time
-    print(f"[*] Training finished in {total_time:.1f}s.")
-    print(f"[*] Best model checkpoint saved to: {best_model_path}")
+    print(f"\n[*] Training finished in {total_time:.1f}s.")
+    
+    # Ensure final model is saved if callback did not trigger
+    if not os.path.exists(best_model_path):
+        model.save(best_model_path)
+    print(f"[*] Best model checkpoint confirmed at: {best_model_path}")
     
     # 5. Plot & Save History
     curves_path = os.path.join(args.output_dir, "training_curves.png")
@@ -143,6 +226,17 @@ def main():
     with open(metrics_path, "w") as f:
         json.dump({k: [float(x) for x in v] for k, v in history.history.items()}, f, indent=4)
     print(f"[*] Saved training metrics to: {metrics_path}")
+
+    # 6. Auto-evaluate on Test and Valid Sets
+    from src.evaluate import run_evaluation
+    print("\n[*] Running post-training evaluation across splits...")
+    run_evaluation(
+        model_path=best_model_path,
+        dataset_root=args.dataset_root,
+        split="all",
+        output_dir="metrics",
+        img_size=args.img_size
+    )
 
 if __name__ == "__main__":
     main()

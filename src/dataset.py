@@ -8,22 +8,69 @@ from sklearn.model_selection import StratifiedGroupKFold, GroupShuffleSplit
 
 CLASS_NAMES = ["Normal", "Defective"]
 
+def find_dataset_root(candidate_root: str = "dataset") -> str:
+    """
+    Locates the dataset directory automatically by checking standard candidate locations.
+    """
+    candidates = [
+        candidate_root,
+        "dataset",
+        "Bottle Defect.v10-final_version.yolov8",
+        os.path.join(os.path.dirname(os.path.dirname(__file__)), "dataset"),
+        os.path.join(os.path.dirname(os.path.dirname(__file__)), "Bottle Defect.v10-final_version.yolov8")
+    ]
+    for cand in candidates:
+        if os.path.exists(cand) and (os.path.exists(os.path.join(cand, "test")) or os.path.exists(os.path.join(cand, "train"))):
+            return cand
+
+    # Scan current directory for any directory containing YOLO subdirectories
+    for item in os.listdir("."):
+        if os.path.isdir(item) and (os.path.exists(os.path.join(item, "train")) or os.path.exists(os.path.join(item, "test"))):
+            return item
+
+    return candidate_root
+
+def resolve_image_path(path: str, dataset_root: str = None) -> str:
+    """
+    Resolves an image path from manifest or relative path to a verified existing file path on disk.
+    """
+    if os.path.exists(path):
+        return os.path.abspath(path)
+
+    resolved_root = find_dataset_root(dataset_root or "dataset")
+
+    # Check if path relative to resolved_root without first segment
+    norm_path = os.path.normpath(path)
+    parts = norm_path.split(os.sep)
+    if len(parts) > 1:
+        alt_path = os.path.join(resolved_root, *parts[1:])
+        if os.path.exists(alt_path):
+            return os.path.abspath(alt_path)
+
+    # Search in test/train/valid by filename
+    filename = os.path.basename(path)
+    for split in ["test", "valid", "train"]:
+        candidate = os.path.join(resolved_root, split, "images", filename)
+        if os.path.exists(candidate):
+            return os.path.abspath(candidate)
+
+    return path
+
 def parse_yolo_labels(label_path: str) -> int:
     """
     Parses YOLO label text file.
     Rule:
     - If ANY detected object has class 1 (open-cap / defect), the bottle is DEFECTIVE (1).
-    - If all detected objects are class 0 (Good-cap), the bottle is NORMAL (0).
-    - If empty or invalid, returns -1.
+    - If all detected objects are class 0 (Good-cap) or the file is empty/background, the bottle is NORMAL (0).
     """
     if not os.path.exists(label_path):
-        return -1
+        return 0
         
     with open(label_path, "r") as f:
         lines = [l.strip() for l in f if l.strip()]
         
     if not lines:
-        return -1
+        return 0
         
     classes = []
     for line in lines:
@@ -34,16 +81,38 @@ def parse_yolo_labels(label_path: str) -> int:
             except ValueError:
                 pass
                 
-    if not classes:
-        return -1
-        
-    # Multi-object rule: if any defect is present, the product is defective
     if 1 in classes:
         return 1
-    elif all(c == 0 for c in classes):
-        return 0
-    else:
-        return 0
+    return 0
+
+def load_yolo_direct_dataset(dataset_root: str = "dataset") -> Tuple[Dict[str, List[str]], Dict[str, List[int]]]:
+    """
+    Loads dataset strictly respecting the YOLO dataset folder splits:
+    - train/ (images & labels: 627 images)
+    - valid/ (images & labels: 60 images)
+    - test/  (images & labels: 30 images)
+    """
+    dataset_root = find_dataset_root(dataset_root)
+    split_paths = {"train": [], "valid": [], "test": []}
+    split_labels = {"train": [], "valid": [], "test": []}
+    
+    valid_exts = {".jpg", ".jpeg", ".png", ".bmp"}
+    for split in ["train", "valid", "test"]:
+        img_dir = os.path.join(dataset_root, split, "images")
+        if not os.path.exists(img_dir):
+            continue
+        split_files = sorted([
+            os.path.join(img_dir, f) for f in os.listdir(img_dir)
+            if os.path.splitext(f)[1].lower() in valid_exts
+        ])
+        for img_path in split_files:
+            base_name = os.path.splitext(os.path.basename(img_path))[0]
+            lbl_path = os.path.join(dataset_root, split, "labels", f"{base_name}.txt")
+            label = parse_yolo_labels(lbl_path)
+            split_paths[split].append(os.path.abspath(img_path))
+            split_labels[split].append(label)
+                    
+    return split_paths, split_labels
 
 def load_and_split_dataset(dataset_root: str = "dataset",
                            test_size: float = 0.15,
@@ -54,15 +123,19 @@ def load_and_split_dataset(dataset_root: str = "dataset",
     All augmented versions of the same physical bottle (base_id) are strictly kept within the SAME split.
     No labels are inferred from filenames — 100% parsed from YOLO annotations.
     """
+    dataset_root = find_dataset_root(dataset_root)
+    valid_exts = {".jpg", ".jpeg", ".png", ".bmp"}
     all_image_paths = []
     for split in ["train", "valid", "test"]:
         img_dir = os.path.join(dataset_root, split, "images")
         if os.path.exists(img_dir):
-            for ext in ["*.jpg", "*.jpeg", "*.png", "*.bmp", "*.JPG", "*.PNG"]:
-                all_image_paths.extend(glob.glob(os.path.join(img_dir, ext)))
+            all_image_paths.extend([
+                os.path.join(img_dir, f) for f in os.listdir(img_dir)
+                if os.path.splitext(f)[1].lower() in valid_exts
+            ])
 
     samples = []
-    for img_path in sorted(all_image_paths):
+    for img_path in sorted(set(all_image_paths)):
         base_name = os.path.splitext(os.path.basename(img_path))[0]
         # Extract base physical image ID (e.g., 'IMG_1100' from 'IMG_1100_jpg.rf.803fa...')
         base_id = base_name.split(".rf.")[0].replace("_jpg", "").replace("_JPG", "")
@@ -158,8 +231,12 @@ def create_tf_dataset(filepaths: List[str], labels: List[int], img_size: int = 2
     dataset = dataset.prefetch(buffer_size=tf.data.AUTOTUNE)
     return dataset
 
-def get_data_loaders(dataset_root: str = "dataset", batch_size: int = 32, img_size: int = 224, seed: int = 42):
-    split_paths, split_labels = load_and_split_dataset(dataset_root, test_size=0.15, val_size=0.15, seed=seed)
+def get_data_loaders(dataset_root: str = "dataset", batch_size: int = 32, img_size: int = 224, seed: int = 42, use_direct_split: bool = True):
+    dataset_root = find_dataset_root(dataset_root)
+    if use_direct_split:
+        split_paths, split_labels = load_yolo_direct_dataset(dataset_root)
+    else:
+        split_paths, split_labels = load_and_split_dataset(dataset_root, test_size=0.15, val_size=0.15, seed=seed)
 
     train_ds = create_tf_dataset(split_paths["train"], split_labels["train"], img_size, batch_size, is_training=True)
     valid_ds = create_tf_dataset(split_paths["valid"], split_labels["valid"], img_size, batch_size, is_training=False)

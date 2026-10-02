@@ -1,97 +1,121 @@
 {
+    "framework": "TensorFlow 2.x",
     "split": "test",
     "sample_count": 30,
+    "accuracy": 0.8,
     "metrics": {
         "Normal": {
-            "precision": 0.7894736842105263,
+            "precision": 0.7142857142857143,
             "recall": 1.0,
-            "f1-score": 0.8823529411764706,
+            "f1-score": 0.8333333333333334,
             "support": 15.0
         },
         "Defective": {
             "precision": 1.0,
-            "recall": 0.7333333333333333,
-            "f1-score": 0.8461538461538461,
+            "recall": 0.6,
+            "f1-score": 0.75,
             "support": 15.0
         },
-        "accuracy": 0.8666666666666667,
+        "accuracy": 0.8,
         "macro avg": {
-            "precision": 0.8947368421052632,
-            "recall": 0.8666666666666667,
-            "f1-score": 0.8642533936651584,
+            "precision": 0.8571428571428572,
+            "recall": 0.8,
+            "f1-score": 0.7916666666666667,
             "support": 30.0
         },
         "weighted avg": {
-            "precision": 0.8947368421052633,
-            "recall": 0.8666666666666667,
-            "f1-score": 0.8642533936651584,
+            "precision": 0.8571428571428572,
+            "recall": 0.8,
+            "f1-score": 0.7916666666666666,
             "support": 30.0
         }
     },
-    "roc_auc": 0.9111111111111111,
-    "confusion_matrix": {
-        "matrix": [
-            [
-                15,
-                0
-            ],
-            [
-                4,
-                11
-            ]
+    "roc_auc": 0.7111111111111111,
+    "confusion_matrix": [
+        [
+            15,
+            0
         ],
-        "true_negatives": 15,
-        "false_positives": 0,
-        "false_negatives": 4,
-        "true_positives": 11
-    },
+        [
+            6,
+            9
+        ]
+    ],
     "error_analysis": {
-        "total_errors": 4,
+        "total_errors": 6,
         "false_positives": 0,
-        "false_negatives": 4,
+        "false_negatives": 6,
         "error_samples": [
             {
                 "filename": "IMG_1426_jpg.rf.313cd333210eba49a155780356b8db38.jpg",
-                "image_path": "dataset\\test\\images\\IMG_1426_jpg.rf.313cd333210eba49a155780356b8db38.jpg",
+                "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1426_jpg.rf.313cd333210eba49a155780356b8db38.jpg",
                 "true_class": "Defective",
                 "predicted_class": "Normal",
                 "confidence": 1.0,
-                "prob_normal": 1.0,
-                "prob_defective": 7.440765668539906e-14,
                 "correct": false,
+                "is_defective": false,
+                "prob_normal": 1.0,
+                "prob_defective": 2.8614808547829107e-13,
                 "error_type": "False Negative"
             },
             {
                 "filename": "IMG_1428_jpg.rf.349effadee723bec8243aaeaa712c24e.jpg",
-                "image_path": "dataset\\test\\images\\IMG_1428_jpg.rf.349effadee723bec8243aaeaa712c24e.jpg",
+                "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1428_jpg.rf.349effadee723bec8243aaeaa712c24e.jpg",
                 "true_class": "Defective",
                 "predicted_class": "Normal",
                 "confidence": 1.0,
-                "prob_normal": 1.0,
-                "prob_defective": 1.900505577565048e-12,
                 "correct": false,
+                "is_defective": false,
+                "prob_normal": 1.0,
+                "prob_defective": 2.7355645960264185e-12,
+                "error_type": "False Negative"
+            },
+            {
+                "filename": "IMG_1430_jpg.rf.768b7fc2dc2413cce278685825f73382.jpg",
+                "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1430_jpg.rf.768b7fc2dc2413cce278685825f73382.jpg",
+                "true_class": "Defective",
+                "predicted_class": "Normal",
+                "confidence": 1.0,
+                "correct": false,
+                "is_defective": false,
+                "prob_normal": 1.0,
+                "prob_defective": 1.1910736410554785e-21,
                 "error_type": "False Negative"
             },
             {
                 "filename": "IMG_1439_jpg.rf.10111fdf8a6432c38f70251216501cfa.jpg",
-                "image_path": "dataset\\test\\images\\IMG_1439_jpg.rf.10111fdf8a6432c38f70251216501cfa.jpg",
+                "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1439_jpg.rf.10111fdf8a6432c38f70251216501cfa.jpg",
                 "true_class": "Defective",
                 "predicted_class": "Normal",
-                "confidence": 0.9174819588661194,
-                "prob_normal": 0.9174819588661194,
-                "prob_defective": 0.0825180932879448,
+                "confidence": 1.0,
                 "correct": false,
+                "is_defective": false,
+                "prob_normal": 1.0,
+                "prob_defective": 1.1596348239521342e-16,
+                "error_type": "False Negative"
+            },
+            {
+                "filename": "IMG_1463_jpg.rf.4bd5f703d338ea6b29d43ab86b01803c.jpg",
+                "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1463_jpg.rf.4bd5f703d338ea6b29d43ab86b01803c.jpg",
+                "true_class": "Defective",
+                "predicted_class": "Normal",
+                "confidence": 0.6736451387405396,
+                "correct": false,
+                "is_defective": false,
+                "prob_normal": 0.6736451387405396,
+                "prob_defective": 0.32635489106178284,
                 "error_type": "False Negative"
             },
             {
                 "filename": "IMG_1560_jpg.rf.9ce1c1203786c779157c1e8f9a6c073d.jpg",
-                "image_path": "dataset\\test\\images\\IMG_1560_jpg.rf.9ce1c1203786c779157c1e8f9a6c073d.jpg",
+                "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1560_jpg.rf.9ce1c1203786c779157c1e8f9a6c073d.jpg",
                 "true_class": "Defective",
                 "predicted_class": "Normal",
-                "confidence": 0.9763432145118713,
-                "prob_normal": 0.9763432145118713,
-                "prob_defective": 0.02365678921341896,
+                "confidence": 1.0,
                 "correct": false,
+                "is_defective": false,
+                "prob_normal": 1.0,
+                "prob_defective": 7.952791514590013e-18,
                 "error_type": "False Negative"
             }
         ]
@@ -99,306 +123,338 @@
     "all_predictions": [
         {
             "filename": "IMG_1103_JPG.rf.1ea762411aa852328fbf1a93d35f2337.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1103_JPG.rf.1ea762411aa852328fbf1a93d35f2337.jpg",
-            "true_class": "Normal",
-            "predicted_class": "Normal",
-            "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 8.065045159488804e-12,
-            "correct": true
-        },
-        {
-            "filename": "IMG_1115_jpg.rf.6c58cbc8468bee126bd931c065229c03.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1115_jpg.rf.6c58cbc8468bee126bd931c065229c03.jpg",
-            "true_class": "Normal",
-            "predicted_class": "Normal",
-            "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 1.2217078748395088e-13,
-            "correct": true
-        },
-        {
-            "filename": "IMG_1122_jpg.rf.210714c768f685555d07f35a8e765d4b.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1122_jpg.rf.210714c768f685555d07f35a8e765d4b.jpg",
-            "true_class": "Normal",
-            "predicted_class": "Normal",
-            "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 1.7578795700446166e-18,
-            "correct": true
-        },
-        {
-            "filename": "IMG_1141_jpg.rf.2b69996a4120695e46b74a6e362f96ee.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1141_jpg.rf.2b69996a4120695e46b74a6e362f96ee.jpg",
-            "true_class": "Normal",
-            "predicted_class": "Normal",
-            "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 1.881054895180867e-10,
-            "correct": true
-        },
-        {
-            "filename": "IMG_1142_jpg.rf.754458d81f541cfb6e7c9d6a0ed724cd.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1142_jpg.rf.754458d81f541cfb6e7c9d6a0ed724cd.jpg",
-            "true_class": "Normal",
-            "predicted_class": "Normal",
-            "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 1.3750590987707647e-15,
-            "correct": true
-        },
-        {
-            "filename": "IMG_1149_jpg.rf.c28ef6e900171eac5e48ae8d81fbc099.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1149_jpg.rf.c28ef6e900171eac5e48ae8d81fbc099.jpg",
-            "true_class": "Normal",
-            "predicted_class": "Normal",
-            "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 1.5630932132811677e-15,
-            "correct": true
-        },
-        {
-            "filename": "IMG_1154_jpg.rf.e7c4b817255c0b7e1efb1fab9d4d2b12.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1154_jpg.rf.e7c4b817255c0b7e1efb1fab9d4d2b12.jpg",
-            "true_class": "Normal",
-            "predicted_class": "Normal",
-            "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 1.2465691727556877e-13,
-            "correct": true
-        },
-        {
-            "filename": "IMG_1157_jpg.rf.ef9dea235bc43a2125c9fa8876caa1db.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1157_jpg.rf.ef9dea235bc43a2125c9fa8876caa1db.jpg",
-            "true_class": "Normal",
-            "predicted_class": "Normal",
-            "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 6.046623298632328e-14,
-            "correct": true
-        },
-        {
-            "filename": "IMG_1182_jpg.rf.4169860735d260347bea6ad773d9b1bd.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1182_jpg.rf.4169860735d260347bea6ad773d9b1bd.jpg",
-            "true_class": "Normal",
-            "predicted_class": "Normal",
-            "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 3.8862563341013345e-12,
-            "correct": true
-        },
-        {
-            "filename": "IMG_1190_jpg.rf.d25eb1a84a0623dc10096b812b69f643.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1190_jpg.rf.d25eb1a84a0623dc10096b812b69f643.jpg",
-            "true_class": "Normal",
-            "predicted_class": "Normal",
-            "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 1.4621385699409295e-11,
-            "correct": true
-        },
-        {
-            "filename": "IMG_1204_jpg.rf.93d2382ebcf4de2248c60ed99cfb9c46.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1204_jpg.rf.93d2382ebcf4de2248c60ed99cfb9c46.jpg",
-            "true_class": "Normal",
-            "predicted_class": "Normal",
-            "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 1.3548472066471362e-10,
-            "correct": true
-        },
-        {
-            "filename": "IMG_1218_jpg.rf.d8e5d0f9f0eeb51b41a947058b9afa71.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1218_jpg.rf.d8e5d0f9f0eeb51b41a947058b9afa71.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1103_JPG.rf.1ea762411aa852328fbf1a93d35f2337.jpg",
             "true_class": "Normal",
             "predicted_class": "Normal",
             "confidence": 0.9999994039535522,
+            "correct": true,
+            "is_defective": false,
             "prob_normal": 0.9999994039535522,
-            "prob_defective": 6.278290811678744e-07,
-            "correct": true
+            "prob_defective": 5.600266490546346e-07
+        },
+        {
+            "filename": "IMG_1115_jpg.rf.6c58cbc8468bee126bd931c065229c03.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1115_jpg.rf.6c58cbc8468bee126bd931c065229c03.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 6.486063075517023e-11
+        },
+        {
+            "filename": "IMG_1122_jpg.rf.210714c768f685555d07f35a8e765d4b.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1122_jpg.rf.210714c768f685555d07f35a8e765d4b.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 1.1497209332852771e-14
+        },
+        {
+            "filename": "IMG_1141_jpg.rf.2b69996a4120695e46b74a6e362f96ee.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1141_jpg.rf.2b69996a4120695e46b74a6e362f96ee.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 6.208616398772904e-10
+        },
+        {
+            "filename": "IMG_1142_jpg.rf.754458d81f541cfb6e7c9d6a0ed724cd.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1142_jpg.rf.754458d81f541cfb6e7c9d6a0ed724cd.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 3.7520005413118826e-14
+        },
+        {
+            "filename": "IMG_1149_jpg.rf.c28ef6e900171eac5e48ae8d81fbc099.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1149_jpg.rf.c28ef6e900171eac5e48ae8d81fbc099.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 5.587324193434128e-16
+        },
+        {
+            "filename": "IMG_1154_jpg.rf.e7c4b817255c0b7e1efb1fab9d4d2b12.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1154_jpg.rf.e7c4b817255c0b7e1efb1fab9d4d2b12.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 7.926586470530239e-12
+        },
+        {
+            "filename": "IMG_1157_jpg.rf.ef9dea235bc43a2125c9fa8876caa1db.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1157_jpg.rf.ef9dea235bc43a2125c9fa8876caa1db.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 3.940567663840433e-11
+        },
+        {
+            "filename": "IMG_1182_jpg.rf.4169860735d260347bea6ad773d9b1bd.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1182_jpg.rf.4169860735d260347bea6ad773d9b1bd.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 0.9999997615814209,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 0.9999997615814209,
+            "prob_defective": 2.135325871677196e-07
+        },
+        {
+            "filename": "IMG_1190_jpg.rf.d25eb1a84a0623dc10096b812b69f643.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1190_jpg.rf.d25eb1a84a0623dc10096b812b69f643.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 1.4396317027376426e-08
+        },
+        {
+            "filename": "IMG_1204_jpg.rf.93d2382ebcf4de2248c60ed99cfb9c46.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1204_jpg.rf.93d2382ebcf4de2248c60ed99cfb9c46.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 5.539888991989983e-09
+        },
+        {
+            "filename": "IMG_1218_jpg.rf.d8e5d0f9f0eeb51b41a947058b9afa71.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1218_jpg.rf.d8e5d0f9f0eeb51b41a947058b9afa71.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 0.9999998807907104,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 0.9999998807907104,
+            "prob_defective": 1.2069116905877308e-07
         },
         {
             "filename": "IMG_1237_jpg.rf.5870cd434592784a4bfb8a64a0730768.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1237_jpg.rf.5870cd434592784a4bfb8a64a0730768.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1237_jpg.rf.5870cd434592784a4bfb8a64a0730768.jpg",
             "true_class": "Normal",
             "predicted_class": "Normal",
-            "confidence": 0.999854564666748,
-            "prob_normal": 0.999854564666748,
-            "prob_defective": 0.00014542427379637957,
-            "correct": true
+            "confidence": 1.0,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 5.30567462116464e-16
         },
         {
             "filename": "IMG_1240_jpg.rf.6398e650ca93e5aa23f59b7341a2e3d4.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1240_jpg.rf.6398e650ca93e5aa23f59b7341a2e3d4.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1240_jpg.rf.6398e650ca93e5aa23f59b7341a2e3d4.jpg",
             "true_class": "Normal",
             "predicted_class": "Normal",
-            "confidence": 0.9999996423721313,
-            "prob_normal": 0.9999996423721313,
-            "prob_defective": 3.773898811232357e-07,
-            "correct": true
+            "confidence": 0.9999972581863403,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 0.9999972581863403,
+            "prob_defective": 2.774698941720999e-06
         },
         {
             "filename": "IMG_1250_jpg.rf.682bebdf85d39c4ba85dd09d3ff57325.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1250_jpg.rf.682bebdf85d39c4ba85dd09d3ff57325.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1250_jpg.rf.682bebdf85d39c4ba85dd09d3ff57325.jpg",
             "true_class": "Normal",
             "predicted_class": "Normal",
-            "confidence": 0.9895971417427063,
-            "prob_normal": 0.9895971417427063,
-            "prob_defective": 0.010402933694422245,
-            "correct": true
+            "confidence": 1.0,
+            "correct": true,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 2.0382197855493486e-14
         },
         {
             "filename": "IMG_1426_jpg.rf.313cd333210eba49a155780356b8db38.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1426_jpg.rf.313cd333210eba49a155780356b8db38.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1426_jpg.rf.313cd333210eba49a155780356b8db38.jpg",
             "true_class": "Defective",
             "predicted_class": "Normal",
             "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 7.440765668539906e-14,
             "correct": false,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 2.8614808547829107e-13,
             "error_type": "False Negative"
         },
         {
             "filename": "IMG_1428_jpg.rf.349effadee723bec8243aaeaa712c24e.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1428_jpg.rf.349effadee723bec8243aaeaa712c24e.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1428_jpg.rf.349effadee723bec8243aaeaa712c24e.jpg",
             "true_class": "Defective",
             "predicted_class": "Normal",
             "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 1.900505577565048e-12,
             "correct": false,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 2.7355645960264185e-12,
             "error_type": "False Negative"
         },
         {
             "filename": "IMG_1430_jpg.rf.768b7fc2dc2413cce278685825f73382.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1430_jpg.rf.768b7fc2dc2413cce278685825f73382.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1430_jpg.rf.768b7fc2dc2413cce278685825f73382.jpg",
             "true_class": "Defective",
-            "predicted_class": "Defective",
-            "confidence": 0.9999995231628418,
-            "prob_normal": 4.763417109643342e-07,
-            "prob_defective": 0.9999995231628418,
-            "correct": true
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "correct": false,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 1.1910736410554785e-21,
+            "error_type": "False Negative"
         },
         {
             "filename": "IMG_1439_jpg.rf.10111fdf8a6432c38f70251216501cfa.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1439_jpg.rf.10111fdf8a6432c38f70251216501cfa.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1439_jpg.rf.10111fdf8a6432c38f70251216501cfa.jpg",
             "true_class": "Defective",
             "predicted_class": "Normal",
-            "confidence": 0.9174819588661194,
-            "prob_normal": 0.9174819588661194,
-            "prob_defective": 0.0825180932879448,
+            "confidence": 1.0,
             "correct": false,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 1.1596348239521342e-16,
             "error_type": "False Negative"
         },
         {
             "filename": "IMG_1453_jpg.rf.80a57b5015f055f5eb1493173c2d6679.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1453_jpg.rf.80a57b5015f055f5eb1493173c2d6679.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1453_jpg.rf.80a57b5015f055f5eb1493173c2d6679.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 0.9999996423721313,
-            "prob_normal": 3.749811980924278e-07,
-            "prob_defective": 0.9999996423721313,
-            "correct": true
+            "confidence": 0.9994795918464661,
+            "correct": true,
+            "is_defective": true,
+            "prob_normal": 0.000520482542924583,
+            "prob_defective": 0.9994795918464661
         },
         {
             "filename": "IMG_1455_jpg.rf.339d14397427f8e9f8400621071ff3c8.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1455_jpg.rf.339d14397427f8e9f8400621071ff3c8.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1455_jpg.rf.339d14397427f8e9f8400621071ff3c8.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 1.0,
-            "prob_normal": 7.40718597569412e-12,
-            "prob_defective": 1.0,
-            "correct": true
+            "confidence": 0.9999816417694092,
+            "correct": true,
+            "is_defective": true,
+            "prob_normal": 1.8338239897275344e-05,
+            "prob_defective": 0.9999816417694092
         },
         {
             "filename": "IMG_1463_jpg.rf.4bd5f703d338ea6b29d43ab86b01803c.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1463_jpg.rf.4bd5f703d338ea6b29d43ab86b01803c.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1463_jpg.rf.4bd5f703d338ea6b29d43ab86b01803c.jpg",
             "true_class": "Defective",
-            "predicted_class": "Defective",
-            "confidence": 0.9230043888092041,
-            "prob_normal": 0.0769956186413765,
-            "prob_defective": 0.9230043888092041,
-            "correct": true
+            "predicted_class": "Normal",
+            "confidence": 0.6736451387405396,
+            "correct": false,
+            "is_defective": false,
+            "prob_normal": 0.6736451387405396,
+            "prob_defective": 0.32635489106178284,
+            "error_type": "False Negative"
         },
         {
             "filename": "IMG_1470_jpg.rf.0d17a1cce006e80848a88c8fcf6425cb.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1470_jpg.rf.0d17a1cce006e80848a88c8fcf6425cb.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1470_jpg.rf.0d17a1cce006e80848a88c8fcf6425cb.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 0.9999880790710449,
-            "prob_normal": 1.1912110494449735e-05,
-            "prob_defective": 0.9999880790710449,
-            "correct": true
+            "confidence": 0.8356849551200867,
+            "correct": true,
+            "is_defective": true,
+            "prob_normal": 0.1643150895833969,
+            "prob_defective": 0.8356849551200867
         },
         {
             "filename": "IMG_1474_jpg.rf.b127f585fbe6ead7568e311cb5fb3b60.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1474_jpg.rf.b127f585fbe6ead7568e311cb5fb3b60.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1474_jpg.rf.b127f585fbe6ead7568e311cb5fb3b60.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 0.9999905824661255,
-            "prob_normal": 9.439359928364865e-06,
-            "prob_defective": 0.9999905824661255,
-            "correct": true
+            "confidence": 0.9992538094520569,
+            "correct": true,
+            "is_defective": true,
+            "prob_normal": 0.0007461178465746343,
+            "prob_defective": 0.9992538094520569
         },
         {
             "filename": "IMG_1508_jpg.rf.a30617e184e1e19276291d999fe3e298.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1508_jpg.rf.a30617e184e1e19276291d999fe3e298.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1508_jpg.rf.a30617e184e1e19276291d999fe3e298.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
             "confidence": 1.0,
-            "prob_normal": 1.895954530525823e-12,
-            "prob_defective": 1.0,
-            "correct": true
+            "correct": true,
+            "is_defective": true,
+            "prob_normal": 1.6060900873138273e-11,
+            "prob_defective": 1.0
         },
         {
             "filename": "IMG_1512_jpg.rf.e481a93764841438602e9ae4b22f0e84.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1512_jpg.rf.e481a93764841438602e9ae4b22f0e84.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1512_jpg.rf.e481a93764841438602e9ae4b22f0e84.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
             "confidence": 1.0,
-            "prob_normal": 7.429028095820578e-13,
-            "prob_defective": 1.0,
-            "correct": true
+            "correct": true,
+            "is_defective": true,
+            "prob_normal": 2.113088315436329e-10,
+            "prob_defective": 1.0
         },
         {
             "filename": "IMG_1526_jpg.rf.6fb9aa4f1ac0de450c6460d0fc5d6d41.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1526_jpg.rf.6fb9aa4f1ac0de450c6460d0fc5d6d41.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1526_jpg.rf.6fb9aa4f1ac0de450c6460d0fc5d6d41.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
             "confidence": 1.0,
-            "prob_normal": 5.9759675506698695e-12,
-            "prob_defective": 1.0,
-            "correct": true
+            "correct": true,
+            "is_defective": true,
+            "prob_normal": 1.820014972064854e-11,
+            "prob_defective": 1.0
         },
         {
             "filename": "IMG_1530_jpg.rf.06aa877fce571af5c2786fea10935b82.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1530_jpg.rf.06aa877fce571af5c2786fea10935b82.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1530_jpg.rf.06aa877fce571af5c2786fea10935b82.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 1.0,
-            "prob_normal": 3.517505229688571e-14,
-            "prob_defective": 1.0,
-            "correct": true
+            "confidence": 0.9999994039535522,
+            "correct": true,
+            "is_defective": true,
+            "prob_normal": 6.230276881069585e-07,
+            "prob_defective": 0.9999994039535522
         },
         {
             "filename": "IMG_1553_jpg.rf.7f3b0c0015a8cdc8184e3b7ccdc9f3cf.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1553_jpg.rf.7f3b0c0015a8cdc8184e3b7ccdc9f3cf.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1553_jpg.rf.7f3b0c0015a8cdc8184e3b7ccdc9f3cf.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 1.0,
-            "prob_normal": 2.854263936313828e-09,
-            "prob_defective": 1.0,
-            "correct": true
+            "confidence": 0.9995508790016174,
+            "correct": true,
+            "is_defective": true,
+            "prob_normal": 0.00044913796591572464,
+            "prob_defective": 0.9995508790016174
         },
         {
             "filename": "IMG_1560_jpg.rf.9ce1c1203786c779157c1e8f9a6c073d.jpg",
-            "image_path": "dataset\\test\\images\\IMG_1560_jpg.rf.9ce1c1203786c779157c1e8f9a6c073d.jpg",
+            "image_path": "E:\\bottle_detect detection system\\Bottle Defect.v10-final_version.yolov8\\test\\images\\IMG_1560_jpg.rf.9ce1c1203786c779157c1e8f9a6c073d.jpg",
             "true_class": "Defective",
             "predicted_class": "Normal",
-            "confidence": 0.9763432145118713,
-            "prob_normal": 0.9763432145118713,
-            "prob_defective": 0.02365678921341896,
+            "confidence": 1.0,
             "correct": false,
+            "is_defective": false,
+            "prob_normal": 1.0,
+            "prob_defective": 7.952791514590013e-18,
             "error_type": "False Negative"
         }
     ]
