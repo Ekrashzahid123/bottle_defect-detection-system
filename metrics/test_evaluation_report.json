@@ -1,0 +1,393 @@
+{
+    "split": "test",
+    "sample_count": 30,
+    "metrics": {
+        "Normal": {
+            "precision": 0.8333333333333334,
+            "recall": 1.0,
+            "f1-score": 0.9090909090909091,
+            "support": 15.0
+        },
+        "Defective": {
+            "precision": 1.0,
+            "recall": 0.8,
+            "f1-score": 0.8888888888888888,
+            "support": 15.0
+        },
+        "accuracy": 0.9,
+        "macro avg": {
+            "precision": 0.9166666666666667,
+            "recall": 0.9,
+            "f1-score": 0.898989898989899,
+            "support": 30.0
+        },
+        "weighted avg": {
+            "precision": 0.9166666666666666,
+            "recall": 0.9,
+            "f1-score": 0.898989898989899,
+            "support": 30.0
+        }
+    },
+    "roc_auc": 1.0,
+    "confusion_matrix": {
+        "matrix": [
+            [
+                15,
+                0
+            ],
+            [
+                3,
+                12
+            ]
+        ],
+        "true_negatives": 15,
+        "false_positives": 0,
+        "false_negatives": 3,
+        "true_positives": 12
+    },
+    "error_analysis": {
+        "total_errors": 3,
+        "false_positives": 0,
+        "false_negatives": 3,
+        "error_samples": [
+            {
+                "filename": "IMG_1428_jpg.rf.349effadee723bec8243aaeaa712c24e.jpg",
+                "image_path": "dataset\\test\\images\\IMG_1428_jpg.rf.349effadee723bec8243aaeaa712c24e.jpg",
+                "true_class": "Defective",
+                "predicted_class": "Normal",
+                "confidence": 0.8879299163818359,
+                "prob_normal": 0.8879299163818359,
+                "prob_defective": 0.11207008361816406,
+                "correct": false,
+                "error_type": "False Negative"
+            },
+            {
+                "filename": "IMG_1439_jpg.rf.10111fdf8a6432c38f70251216501cfa.jpg",
+                "image_path": "dataset\\test\\images\\IMG_1439_jpg.rf.10111fdf8a6432c38f70251216501cfa.jpg",
+                "true_class": "Defective",
+                "predicted_class": "Normal",
+                "confidence": 0.5375121831893921,
+                "prob_normal": 0.5375121831893921,
+                "prob_defective": 0.4624877870082855,
+                "correct": false,
+                "error_type": "False Negative"
+            },
+            {
+                "filename": "IMG_1560_jpg.rf.9ce1c1203786c779157c1e8f9a6c073d.jpg",
+                "image_path": "dataset\\test\\images\\IMG_1560_jpg.rf.9ce1c1203786c779157c1e8f9a6c073d.jpg",
+                "true_class": "Defective",
+                "predicted_class": "Normal",
+                "confidence": 0.5794756412506104,
+                "prob_normal": 0.5794756412506104,
+                "prob_defective": 0.42052438855171204,
+                "correct": false,
+                "error_type": "False Negative"
+            }
+        ]
+    },
+    "all_predictions": [
+        {
+            "filename": "IMG_1103_JPG.rf.1ea762411aa852328fbf1a93d35f2337.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1103_JPG.rf.1ea762411aa852328fbf1a93d35f2337.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "prob_normal": 1.0,
+            "prob_defective": 2.5224691779790476e-10,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1115_jpg.rf.6c58cbc8468bee126bd931c065229c03.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1115_jpg.rf.6c58cbc8468bee126bd931c065229c03.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "prob_normal": 1.0,
+            "prob_defective": 2.2792483161210262e-21,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1122_jpg.rf.210714c768f685555d07f35a8e765d4b.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1122_jpg.rf.210714c768f685555d07f35a8e765d4b.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "prob_normal": 1.0,
+            "prob_defective": 3.943608054892691e-17,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1141_jpg.rf.2b69996a4120695e46b74a6e362f96ee.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1141_jpg.rf.2b69996a4120695e46b74a6e362f96ee.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "prob_normal": 1.0,
+            "prob_defective": 1.2337261834439454e-19,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1142_jpg.rf.754458d81f541cfb6e7c9d6a0ed724cd.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1142_jpg.rf.754458d81f541cfb6e7c9d6a0ed724cd.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "prob_normal": 1.0,
+            "prob_defective": 5.1646849613902025e-18,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1149_jpg.rf.c28ef6e900171eac5e48ae8d81fbc099.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1149_jpg.rf.c28ef6e900171eac5e48ae8d81fbc099.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "prob_normal": 1.0,
+            "prob_defective": 4.899091394944288e-16,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1154_jpg.rf.e7c4b817255c0b7e1efb1fab9d4d2b12.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1154_jpg.rf.e7c4b817255c0b7e1efb1fab9d4d2b12.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "prob_normal": 1.0,
+            "prob_defective": 1.8830098437931097e-19,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1157_jpg.rf.ef9dea235bc43a2125c9fa8876caa1db.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1157_jpg.rf.ef9dea235bc43a2125c9fa8876caa1db.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "prob_normal": 1.0,
+            "prob_defective": 1.489839137172321e-19,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1182_jpg.rf.4169860735d260347bea6ad773d9b1bd.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1182_jpg.rf.4169860735d260347bea6ad773d9b1bd.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "prob_normal": 1.0,
+            "prob_defective": 8.813949346285481e-20,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1190_jpg.rf.d25eb1a84a0623dc10096b812b69f643.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1190_jpg.rf.d25eb1a84a0623dc10096b812b69f643.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "prob_normal": 1.0,
+            "prob_defective": 1.9488577725563285e-16,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1204_jpg.rf.93d2382ebcf4de2248c60ed99cfb9c46.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1204_jpg.rf.93d2382ebcf4de2248c60ed99cfb9c46.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "prob_normal": 1.0,
+            "prob_defective": 4.4880933031354895e-20,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1218_jpg.rf.d8e5d0f9f0eeb51b41a947058b9afa71.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1218_jpg.rf.d8e5d0f9f0eeb51b41a947058b9afa71.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 0.9999998807907104,
+            "prob_normal": 0.9999998807907104,
+            "prob_defective": 9.276809720404344e-08,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1237_jpg.rf.5870cd434592784a4bfb8a64a0730768.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1237_jpg.rf.5870cd434592784a4bfb8a64a0730768.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 0.9999998807907104,
+            "prob_normal": 0.9999998807907104,
+            "prob_defective": 1.3356159911381837e-07,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1240_jpg.rf.6398e650ca93e5aa23f59b7341a2e3d4.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1240_jpg.rf.6398e650ca93e5aa23f59b7341a2e3d4.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 1.0,
+            "prob_normal": 1.0,
+            "prob_defective": 2.1721570722665895e-11,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1250_jpg.rf.682bebdf85d39c4ba85dd09d3ff57325.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1250_jpg.rf.682bebdf85d39c4ba85dd09d3ff57325.jpg",
+            "true_class": "Normal",
+            "predicted_class": "Normal",
+            "confidence": 0.9926509261131287,
+            "prob_normal": 0.9926509261131287,
+            "prob_defective": 0.007349095772951841,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1426_jpg.rf.313cd333210eba49a155780356b8db38.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1426_jpg.rf.313cd333210eba49a155780356b8db38.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Defective",
+            "confidence": 0.6182968020439148,
+            "prob_normal": 0.3817031979560852,
+            "prob_defective": 0.6182968020439148,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1428_jpg.rf.349effadee723bec8243aaeaa712c24e.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1428_jpg.rf.349effadee723bec8243aaeaa712c24e.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Normal",
+            "confidence": 0.8879299163818359,
+            "prob_normal": 0.8879299163818359,
+            "prob_defective": 0.11207008361816406,
+            "correct": false,
+            "error_type": "False Negative"
+        },
+        {
+            "filename": "IMG_1430_jpg.rf.768b7fc2dc2413cce278685825f73382.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1430_jpg.rf.768b7fc2dc2413cce278685825f73382.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Defective",
+            "confidence": 0.9835288524627686,
+            "prob_normal": 0.016471102833747864,
+            "prob_defective": 0.9835288524627686,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1439_jpg.rf.10111fdf8a6432c38f70251216501cfa.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1439_jpg.rf.10111fdf8a6432c38f70251216501cfa.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Normal",
+            "confidence": 0.5375121831893921,
+            "prob_normal": 0.5375121831893921,
+            "prob_defective": 0.4624877870082855,
+            "correct": false,
+            "error_type": "False Negative"
+        },
+        {
+            "filename": "IMG_1453_jpg.rf.80a57b5015f055f5eb1493173c2d6679.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1453_jpg.rf.80a57b5015f055f5eb1493173c2d6679.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Defective",
+            "confidence": 0.998348593711853,
+            "prob_normal": 0.0016513938317075372,
+            "prob_defective": 0.998348593711853,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1455_jpg.rf.339d14397427f8e9f8400621071ff3c8.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1455_jpg.rf.339d14397427f8e9f8400621071ff3c8.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Defective",
+            "confidence": 0.9999350309371948,
+            "prob_normal": 6.500993913505226e-05,
+            "prob_defective": 0.9999350309371948,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1463_jpg.rf.4bd5f703d338ea6b29d43ab86b01803c.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1463_jpg.rf.4bd5f703d338ea6b29d43ab86b01803c.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Defective",
+            "confidence": 0.9999963045120239,
+            "prob_normal": 3.655019781945157e-06,
+            "prob_defective": 0.9999963045120239,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1470_jpg.rf.0d17a1cce006e80848a88c8fcf6425cb.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1470_jpg.rf.0d17a1cce006e80848a88c8fcf6425cb.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Defective",
+            "confidence": 1.0,
+            "prob_normal": 3.2498941315850516e-09,
+            "prob_defective": 1.0,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1474_jpg.rf.b127f585fbe6ead7568e311cb5fb3b60.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1474_jpg.rf.b127f585fbe6ead7568e311cb5fb3b60.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Defective",
+            "confidence": 1.0,
+            "prob_normal": 1.1088232554357091e-09,
+            "prob_defective": 1.0,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1508_jpg.rf.a30617e184e1e19276291d999fe3e298.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1508_jpg.rf.a30617e184e1e19276291d999fe3e298.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Defective",
+            "confidence": 1.0,
+            "prob_normal": 6.171255406206993e-19,
+            "prob_defective": 1.0,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1512_jpg.rf.e481a93764841438602e9ae4b22f0e84.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1512_jpg.rf.e481a93764841438602e9ae4b22f0e84.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Defective",
+            "confidence": 1.0,
+            "prob_normal": 2.3101209191563575e-14,
+            "prob_defective": 1.0,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1526_jpg.rf.6fb9aa4f1ac0de450c6460d0fc5d6d41.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1526_jpg.rf.6fb9aa4f1ac0de450c6460d0fc5d6d41.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Defective",
+            "confidence": 0.9999998807907104,
+            "prob_normal": 6.603107749469928e-08,
+            "prob_defective": 0.9999998807907104,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1530_jpg.rf.06aa877fce571af5c2786fea10935b82.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1530_jpg.rf.06aa877fce571af5c2786fea10935b82.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Defective",
+            "confidence": 0.9999939203262329,
+            "prob_normal": 6.024743925081566e-06,
+            "prob_defective": 0.9999939203262329,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1553_jpg.rf.7f3b0c0015a8cdc8184e3b7ccdc9f3cf.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1553_jpg.rf.7f3b0c0015a8cdc8184e3b7ccdc9f3cf.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Defective",
+            "confidence": 0.9988932013511658,
+            "prob_normal": 0.0011068697785958648,
+            "prob_defective": 0.9988932013511658,
+            "correct": true
+        },
+        {
+            "filename": "IMG_1560_jpg.rf.9ce1c1203786c779157c1e8f9a6c073d.jpg",
+            "image_path": "dataset\\test\\images\\IMG_1560_jpg.rf.9ce1c1203786c779157c1e8f9a6c073d.jpg",
+            "true_class": "Defective",
+            "predicted_class": "Normal",
+            "confidence": 0.5794756412506104,
+            "prob_normal": 0.5794756412506104,
+            "prob_defective": 0.42052438855171204,
+            "correct": false,
+            "error_type": "False Negative"
+        }
+    ]
+}
