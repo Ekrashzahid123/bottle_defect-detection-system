@@ -226,5 +226,3 @@ docker run -p 8000:8000 bottle-defect-detector-tf:latest
 
 
 
-### Q3: Why is MobileNetV3 in TensorFlow ideal for this factory deployment?
-> **Answer**: *"MobileNetV3 uses depthwise separable convolutions, Hard-Swish activations, and Squeeze-and-Excitation attention to deliver high accuracy with only ~2.5M parameters. In TensorFlow, it converts directly to TFLite for deployment onto edge hardware (e.g. Raspberry Pi / Jetson) with sub-15ms inference per bottle."*
