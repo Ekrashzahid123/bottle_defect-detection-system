@@ -239,31 +239,4 @@ docker build -t bottle-defect-detector:latest .
 # Run FastAPI on port 8000
 docker run -p 8000:8000 bottle-defect-detector:latest
 ```
-
----
-
-## 🎓 Interview Defense Guide
-
-### Q1: Why did you choose MobileNetV3 over standard ResNet or YOLO?
-> **Answer**: "For industrial production line inspection, real-time latency (<20ms on CPU) and edge deployability are critical. MobileNetV3-Small delivers an optimal trade-off: it uses Squeeze-and-Excitation attention and Hard-Swish activations to achieve top-tier classification accuracy with only ~2.5M parameters. Because the inspection task asks whether the product is Normal or Defective, image-level classification is simpler, faster, and more robust to maintain than full bounding-box object detection."
-
-### Q2: Why is Recall for the 'Defective' class more critical than Precision?
-> **Answer**: "In manufacturing quality assurance:
-> - A **False Negative (FN)** means a defective product escapes inspection and reaches the customer (brand damage, recall costs, safety risks).
-> - A **False Positive (FP)** means a normal bottle is sent to manual re-inspection (minor operational overhead).
-> Therefore, we prioritize high Recall on the Defective class by using weighted Cross-Entropy Loss and monitoring class-specific recall."
-
-### Q3: How do you handle class imbalance and small dataset sizes?
-> **Answer**: "We apply transfer learning using ImageNet pretrained features, use robust data augmentations (random horizontal flips, subtle rotations, and color jitter) to prevent overfitting, and employ inverse-frequency class weighting in the loss function to ensure the model doesn't favor the majority class."
-
-### Q4: How is this production-ready?
-> **Answer**: "The solution includes:
-> 1. Strict input MIME validation and size checks.
-> 2. Thread-safe inference engine with sub-15ms CPU latency.
-> 3. Structured logging and health check probes (`/health`) for Kubernetes/Docker container monitoring.
-> 4. Automated metrics tracking and error analysis reporting."
-
----
-
-## 📜 License
-CC BY 4.0 / MIT. Built for Industrial Computer Vision Technical Assessment.
+ 
