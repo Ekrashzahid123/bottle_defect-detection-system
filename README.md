@@ -1,79 +1,53 @@
-# 🍾 Industrial Bottle Visual Defect Detection System
+# 🍾 Industrial Bottle Defect Detection System (100% Pure TensorFlow 2.x)
 
-A production-ready, lightweight, and defensible Computer Vision system to detect **Normal** vs. **Defective** bottles on a manufacturing production line. Built with **PyTorch**, **MobileNetV3 (Transfer Learning)**, **FastAPI**, and **Streamlit**.
+A production-ready, leak-free, and defensible Computer Vision system to detect **Normal** vs. **Defective** bottles on a manufacturing production line. Built entirely in **TensorFlow 2.x / Keras**, **MobileNetV3**, **FastAPI**, and **Streamlit**.
 
 ---
 
 ## 📋 Table of Contents
-1. [Project Overview & Architecture](#-project-overview--architecture)
-2. [Model Selection & Design Rationale](#-model-selection--design-rationale)
-3. [Dataset & Preprocessing Strategy](#-dataset--preprocessing-strategy)
+1. [Core Architectural Decisions & Integrity Fixes](#-core-architectural-decisions--integrity-fixes)
+2. [Model Selection & Rationale](#-model-selection--rationale)
+3. [Leak-Free Group-Stratified Dataset Pipeline](#-leak-free-group-stratified-dataset-pipeline)
 4. [Project Structure](#-project-structure)
 5. [Quick Start & Setup Instructions](#-quick-start--setup-instructions)
-6. [Training Pipeline](#-training-pipeline)
-7. [Evaluation & Error Analysis](#-evaluation--error-analysis)
-8. [FastAPI Inference Service](#-fastapi-inference-service)
+6. [Training in TensorFlow](#-training-in-tensorflow)
+7. [Evaluation & Confusion Matrix Analysis](#-evaluation--confusion-matrix-analysis)
+8. [FastAPI Production Service](#-fastapi-production-service)
 9. [Streamlit Interactive Dashboard](#-streamlit-interactive-dashboard)
 10. [Docker Deployment](#-docker-deployment)
-11. [Interview Defense Guide](#-interview-defense-guide)
+11. [Interview Defense Cheat-Sheet](#-interview-defense-cheat-sheet)
 
 ---
 
-## 🏗 Project Overview & Architecture
+## 🛡️ Core Architectural Decisions & Integrity Fixes
 
-In high-speed manufacturing environments, automated visual quality inspection prevents defective items (e.g., open caps, broken seals, missing parts) from reaching consumers. This solution provides a complete end-to-end pipeline:
+To ensure full scientific and engineering defensibility:
+
+| Critical Factor | Problem in Naive Implementations | How We Solved It in TensorFlow |
+| :--- | :--- | :--- |
+| **Data Leakage (Duplicate Images)** | Roboflow creates 3 augmented copies per physical image. Random splitting puts copies of the same bottle across train & test, yielding inflated "100%" test accuracy. | **Group-Aware Stratified Splitting (`GroupShuffleSplit`)**: All augmented views of a physical bottle (`base_id`) are strictly grouped into the **same** split. Zero overlap between Train, Val, and Test. |
+| **Label Source Integrity** | Guessing labels from filename prefixes (`IMG_11xx` vs `IMG_14xx`). | **Pure YOLO Annotation Parsing**: Labels are parsed 100% from YOLO `.txt` files. No heuristic filename guesswork. |
+| **Multi-Object Handling** | Taking only the first token or crashing on multiple boxes. | **Explicit Business Logic**: If **any** object is marked Defective (`class 1`), the product is marked **Defective**. If all are Good (`class 0`), it is **Normal**. |
+| **Validation Set Size** | Tiny validation sets (e.g. 20-40 images) leading to high variance. | Full 3-way split: **Train (70%)**, **Validation (15%)**, and **Holdout Test (15%)** guaranteeing statistical significance. |
+| **Edge Hardware Compatibility** | Heavy CNNs (ResNet, VGG) requiring GPU. | **MobileNetV3 in TensorFlow**: ~2.5M parameters, Hard-Swish activations, Squeeze-and-Excitation attention, ~10ms CPU inference. |
+
+---
+
+## 🧠 Model Selection & Rationale
 
 ```mermaid
 flowchart LR
-    A[Camera / Production Line] -->|Bottle Image| B[FastAPI REST API / Streamlit UI]
-    B -->|Image Preprocessing & Norm| C[MobileNetV3 Classifier]
-    C -->|Logits & Softmax| D[Decision Engine]
-    D -->|Status: Normal / Defective + Conf| E[Quality Control Dashboard / Rejection Actuator]
+    A[Input 224x224x3] --> B[tf.keras MobileNetV3 Pretrained Backbone]
+    B --> C[GlobalAveragePooling2D]
+    C --> D[Dropout 0.25]
+    D --> E[Dense 2 Units + Softmax]
+    E --> F[Normal / Defective Probabilities]
 ```
 
-### Architecture Components:
-- **ML Engine (`src/`)**: MobileNetV3 transfer learning backbone with custom dropout and classification head, balanced loss function, Cosine Annealing learning rate scheduler.
-- **REST API (`api/app.py`)**: High-performance asynchronous FastAPI server providing `/health` and `/predict` endpoints with strict Pydantic payload validation.
-- **Interactive UI (`ui/streamlit_app.py`)**: Real-time inspection dashboard with single-bottle upload, test sample gallery, batch evaluation, and confusion matrix visualization.
-
----
-
-## 🧠 Model Selection & Design Rationale
-
-### Why MobileNetV3?
-| Metric / Criteria | MobileNetV3-Small | ResNet-50 / Large CNNs | YOLO / Object Detectors |
-| :--- | :--- | :--- | :--- |
-| **Model Size** | **~2.5M parameters (9.5 MB)** | ~25.5M parameters (>95 MB) | ~3M - 50M parameters |
-| **CPU Latency** | **~5 – 15 ms / image** | ~40 – 80 ms / image | ~25 – 60 ms / image |
-| **Edge Hardware Friendly** | **Optimized for CPU & ARM (NetAdapt + NAS)** | Requires heavy GPU | Requires GPU for high FPS |
-| **Dataset Fit** | **Ideal for small/medium transfer learning** | Prone to overfitting on small data | Overkill if image is single centered bottle |
-| **Defensibility** | **High (Standard for mobile/edge computer vision)** | Moderate (Heavy) | High (More complex to deploy/tune) |
-
-### Key Architectural Features:
-1. **Inverted Residual Blocks (MobileNetV2 heritage)**: Reduces memory footprint while retaining feature expressiveness.
-2. **Squeeze-and-Excitation (SE) Attention Modules**: Dynamically reweights channel-wise feature responses, sharpening the model's focus on the bottle cap area.
-3. **Hard-Swish Activation**: Replaces standard Swish ($\sigma(x) \cdot x$) with $\frac{x \cdot \text{ReLU6}(x+3)}{6}$, eliminating costly exponential operations on CPU hardware.
-4. **Transfer Learning via ImageNet Weights**: Pretrained low-level visual representations (edges, textures, reflections) allow the model to converge within 10–15 epochs.
-
----
-
-## 📊 Dataset & Preprocessing Strategy
-
-### Classes:
-- **Class 0: `Normal`** (Good cap, properly sealed)
-- **Class 1: `Defective`** (Open cap, missing cap, defective seal)
-
-### Preprocessing & Data Augmentations:
-- **Resizing**: $224 \times 224$ pixels (standard input dimension for MobileNetV3).
-- **Data Augmentations (`train.py`)**:
-  - `RandomHorizontalFlip(p=0.5)`
-  - `RandomRotation(degrees=15)`
-  - `ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2)`
-  - Normalization using ImageNet statistics (`mean=[0.485, 0.456, 0.406]`, `std=[0.229, 0.224, 0.225]`).
-- **Handling Class Imbalance**:
-  - Automatically computes inverse frequency class weights:
-    $$W_c = \frac{N_{\text{total}}}{2 \times N_c}$$
-  - Passes $W_c$ into `torch.nn.CrossEntropyLoss(weight=class_weights)`.
+- **Backbone**: `tf.keras.applications.MobileNetV3Small` (ImageNet pretrained).
+- **Activations**: Hard-Swish $\frac{x \cdot \text{ReLU6}(x+3)}{6}$, avoiding slow exponential operations on embedded CPUs.
+- **Attention**: Squeeze-and-Excitation (SE) channel-wise recalibration focusing on bottle-cap closures.
+- **Loss**: `SparseCategoricalCrossentropy` with automated inverse-frequency `class_weight`.
 
 ---
 
@@ -81,34 +55,37 @@ flowchart LR
 
 ```
 bottle_detect detection system/
-├── dataset/                      # Train, valid, and test sets
-│   ├── train/ (images, labels)
-│   ├── valid/ (images, labels)
-│   └── test/  (images)
-├── models/                       # Checkpoints & training curves
-│   └── best_model.pth
-├── metrics/                      # Confusion matrix & evaluation JSON
+├── dataset/                      # Raw dataset (train, valid, test images & labels)
+├── models/                       # Checkpoints & artifacts
+│   ├── best_model.keras          # Saved Keras MobileNetV3 model
+│   ├── split_manifest.json       # Leak-free split manifest
+│   ├── training_curves.png       # Loss & Accuracy learning curves
+│   └── training_metrics.json     # Epoch log
+├── metrics/                      # Confusion matrices & evaluation JSON
+│   ├── test_confusion_matrix.png
+│   ├── valid_confusion_matrix.png
+│   └── test_evaluation_report.json
 ├── src/
 │   ├── __init__.py
-│   ├── dataset.py                # PyTorch Dataset loader & augmentations
-│   ├── model.py                  # MobileNetV3 architecture definition
-│   ├── train.py                  # Training pipeline with validation & scheduler
-│   ├── evaluate.py               # Precision, Recall, F1, Confusion Matrix, Error Analysis
-│   └── predictor.py              # Thread-safe inference engine
+│   ├── dataset.py                # Group-aware leak-free dataset loader & augmentations
+│   ├── model.py                  # Pure TensorFlow MobileNetV3 architecture
+│   ├── train.py                  # TensorFlow training pipeline
+│   ├── evaluate.py               # Confusion matrix & error analysis
+│   └── predictor.py              # Pure TensorFlow inference engine
 ├── api/
 │   ├── __init__.py
 │   └── app.py                    # FastAPI service (/health, /predict)
 ├── ui/
 │   ├── __init__.py
 │   └── streamlit_app.py          # Interactive Streamlit dashboard
-├── Dockerfile                    # Containerization setup
-├── requirements.txt              # Project dependencies
-└── README.md                     # Documentation & defense guide
+├── Dockerfile                    # Container deployment configuration
+├── requirements.txt              # TensorFlow dependencies
+└── README.md                     # Documentation
 ```
 
 ---
 
-## 🚀 Quick Start & Setup Instructions
+## 🚀 Quick Start & Setup
 
 ### 1. Install Dependencies
 ```bash
@@ -117,74 +94,50 @@ pip install -r requirements.txt
 
 ---
 
-## 🎯 Training Pipeline
+## 🎯 Training in TensorFlow
 
-You can train using either **TensorFlow / Keras** or **PyTorch**:
+To train the MobileNetV3 model with leak-free group splitting:
 
-### Option A: TensorFlow / Keras MobileNetV3 Training
-```bash
-python src/tf_train.py --epochs 12 --batch_size 32 --lr 0.001 --variant small
-```
-
-### Option B: PyTorch MobileNetV3 Training
 ```bash
 python src/train.py --epochs 12 --batch_size 32 --lr 0.001 --variant small
 ```
 
-### Training CLI Arguments:
-- `--epochs`: Number of training epochs (default: `12`).
-- `--batch_size`: Batch size (default: `32`).
-- `--lr`: Initial learning rate for Adam optimizer (default: `0.001`).
-- `--variant`: MobileNetV3 variant (`small` or `large`, default: `small`).
-- `--output_dir`: Directory to save model checkpoints (default: `models`).
-
-**Output Artifacts Generated:**
-- `models/best_model.keras` (TensorFlow) / `models/best_model.pth` (PyTorch)
-- `models/tf_training_curves.png` / `models/training_curves.png`
-- `models/tf_training_metrics.json` / `models/training_metrics.json`
+**Training Outputs:**
+- `models/best_model.keras`: Checkpoint with highest validation accuracy.
+- `models/split_manifest.json`: Exact filepaths and ground-truth labels for Train, Val, and Test sets.
+- `models/training_curves.png`: Training vs. Validation Loss and Accuracy curves.
 
 ---
 
-## 📈 Evaluation & Error Analysis
+## 📈 Evaluation & Confusion Matrix Analysis
 
-To run detailed evaluation on either the **Test Set (30 images)** or **Validation Set (40 images)**:
+To evaluate on the **Holdout Test Set** or **Validation Set**:
 
-### In TensorFlow:
 ```bash
-# Evaluate on Holdout Test Set (30 images)
-python src/tf_evaluate.py --split test
-
-# Evaluate on Validation Set (40 images)
-python src/tf_evaluate.py --split valid
-```
-
-### In PyTorch:
-```bash
-# Evaluate on Holdout Test Set (30 images)
+# Evaluate on Holdout Test Set
 python src/evaluate.py --split test
 
-# Evaluate on Validation Set (40 images)
+# Evaluate on Validation Set
 python src/evaluate.py --split valid
 ```
 
-### Evaluation Output:
-- **Precision, Recall, Macro F1-score**
-- **Confusion Matrix plot** saved to `metrics/confusion_matrix.png`
-- **Error Analysis JSON** saved to `metrics/evaluation_report.json` containing detailed inspection of any False Positives or False Negatives.
+**Outputs:**
+- `metrics/test_confusion_matrix.png`: High-resolution Confusion Matrix plot.
+- `metrics/test_evaluation_report.json`: Precision, Recall, F1-Score, ROC-AUC, and detailed False Positive / False Negative breakdown.
 
 ---
 
-## ⚡ FastAPI Inference Service
+## ⚡ FastAPI Production Service
 
-Start the production FastAPI backend:
+Launch the FastAPI backend:
 
 ```bash
 uvicorn api.app:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-- **Interactive API Docs (Swagger UI)**: [http://localhost:8000/docs](http://localhost:8000/docs)
-- **Health Check**: `GET http://localhost:8000/health`
-- **Predict Endpoint**: `POST http://localhost:8000/predict`
+- **Interactive Swagger Documentation**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **Health Check Probe**: `GET /health`
+- **Predict Endpoint**: `POST /predict`
 
 ### Example `curl` Request:
 ```bash
@@ -194,76 +147,38 @@ curl -X POST "http://localhost:8000/predict" \
   -F "file=@dataset/valid/images/IMG_1116_jpg.rf.51ce82d477a8f07b0068121e119bdb8d.jpg"
 ```
 
-### Example JSON Response:
-```json
-{
-  "status": "success",
-  "prediction": "Defective",
-  "class_id": 1,
-  "is_defective": true,
-  "confidence": 0.9874,
-  "probabilities": {
-    "Normal": 0.0126,
-    "Defective": 0.9874
-  },
-  "inference_time_ms": 11.45
-}
-```
-
 ---
 
 ## 🖥 Streamlit Interactive Dashboard
 
-Launch the UI dashboard:
+Launch the inspection UI:
 
 ```bash
-streamlit run ui/streamlit_app.py
+streamlit run ui/streamlit_app.py --server.port 8503
 ```
 
-### Dashboard Features:
-1. **Live Single Inspection**: Upload your own image or choose from test set samples with real-time classification banner, confidence gauge, and latency metric.
-2. **Batch Test Inspection**: 1-click batch inference over the entire test set with aggregate defect rate and thumbnail gallery.
-3. **Model Analytics Tab**: Visual confusion matrix, training loss/F1 curves, and error analysis breakdown.
+- **Live Single Inspector**: Upload or pick sample bottle images with real-time status banners and latency timer.
+- **Leak-Free Test Evaluation**: 1-click batch evaluation over all holdout test bottles.
+- **Model Analytics**: Confusion matrix plots, loss/accuracy curves, and error analysis inspector.
 
 ---
 
 ## 🐳 Docker Deployment
 
-### Build the Docker Image:
 ```bash
-docker build -t bottle-defect-detector:latest .
-```
-
-### Run the Container:
-```bash
-# Run FastAPI on port 8000
-docker run -p 8000:8000 bottle-defect-detector:latest
+docker build -t bottle-defect-detector-tf:latest .
+docker run -p 8000:8000 bottle-defect-detector-tf:latest
 ```
 
 ---
 
-## 🎓 Interview Defense Guide
+## 🎓 Interview Defense Cheat-Sheet
 
-### Q1: Why did you choose MobileNetV3 over standard ResNet or YOLO?
-> **Answer**: "For industrial production line inspection, real-time latency (<20ms on CPU) and edge deployability are critical. MobileNetV3-Small delivers an optimal trade-off: it uses Squeeze-and-Excitation attention and Hard-Swish activations to achieve top-tier classification accuracy with only ~2.5M parameters. Because the inspection task asks whether the product is Normal or Defective, image-level classification is simpler, faster, and more robust to maintain than full bounding-box object detection."
+### Q1: How did you ensure there is no data leakage across splits?
+> **Answer**: *"Roboflow creates 3 augmented variations per base image. If you use a random train/test split, augmented copies of the same bottle end up in both train and test, which artifically inflates performance. We solved this by implementing `GroupShuffleSplit` on the base image ID (`IMG_XXXX`), guaranteeing that all augmentations of a physical bottle stay strictly inside the same partition."*
 
-### Q2: Why is Recall for the 'Defective' class more critical than Precision?
-> **Answer**: "In manufacturing quality assurance:
-> - A **False Negative (FN)** means a defective product escapes inspection and reaches the customer (brand damage, recall costs, safety risks).
-> - A **False Positive (FP)** means a normal bottle is sent to manual re-inspection (minor operational overhead).
-> Therefore, we prioritize high Recall on the Defective class by using weighted Cross-Entropy Loss and monitoring class-specific recall."
+### Q2: How did you handle labeling and multi-object edge cases?
+> **Answer**: *"We do not rely on filename heuristics. All labels are parsed directly from the YOLO annotation text files. If an image contains multiple objects, we apply industrial QA logic: if **any** bounding box contains class `1` (open cap / defect), the entire product is classified as Defective. If all boxes are class `0`, it is classified as Normal."*
 
-### Q3: How do you handle class imbalance and small dataset sizes?
-> **Answer**: "We apply transfer learning using ImageNet pretrained features, use robust data augmentations (random horizontal flips, subtle rotations, and color jitter) to prevent overfitting, and employ inverse-frequency class weighting in the loss function to ensure the model doesn't favor the majority class."
-
-### Q4: How is this production-ready?
-> **Answer**: "The solution includes:
-> 1. Strict input MIME validation and size checks.
-> 2. Thread-safe inference engine with sub-15ms CPU latency.
-> 3. Structured logging and health check probes (`/health`) for Kubernetes/Docker container monitoring.
-> 4. Automated metrics tracking and error analysis reporting."
-
----
-
-## 📜 License
-CC BY 4.0 / MIT. Built for Industrial Computer Vision Technical Assessment.
+### Q3: Why is MobileNetV3 in TensorFlow ideal for this factory deployment?
+> **Answer**: *"MobileNetV3 uses depthwise separable convolutions, Hard-Swish activations, and Squeeze-and-Excitation attention to deliver high accuracy with only ~2.5M parameters. In TensorFlow, it converts directly to TFLite for deployment onto edge hardware (e.g. Raspberry Pi / Jetson) with sub-15ms inference per bottle."*

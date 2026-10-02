@@ -7,13 +7,12 @@ from PIL import Image
 import streamlit as st
 import pandas as pd
 
-# Path configuration
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 from src.predictor import BottleDefectPredictor
 
 # Page Setup
 st.set_page_config(
-    page_title="Bottle Defect Inspection System",
+    page_title="Bottle Defect Inspection System (TensorFlow 2.x)",
     page_icon="🍾",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -33,13 +32,6 @@ st.markdown("""
         color: #64748B;
         margin-bottom: 1.5rem;
     }
-    .metric-card {
-        background-color: #F8FAFC;
-        border: 1px solid #E2E8F0;
-        border-radius: 10px;
-        padding: 16px;
-        text-align: center;
-    }
     .status-normal {
         background-color: #DCFCE7;
         color: #15803D;
@@ -47,7 +39,7 @@ st.markdown("""
         padding: 15px;
         border-radius: 10px;
         text-align: center;
-        font-size: 1.4rem;
+        font-size: 1.35rem;
         font-weight: bold;
     }
     .status-defective {
@@ -57,7 +49,7 @@ st.markdown("""
         padding: 15px;
         border-radius: 10px;
         text-align: center;
-        font-size: 1.4rem;
+        font-size: 1.35rem;
         font-weight: bold;
     }
 </style>
@@ -65,36 +57,30 @@ st.markdown("""
 
 @st.cache_resource
 def get_model():
-    model_path = os.getenv("MODEL_PATH", "models/best_model.pth")
-    if os.path.exists(model_path):
-        return BottleDefectPredictor(model_path=model_path)
-    return None
+    model_path = os.getenv("MODEL_PATH", "models/best_model.keras")
+    return BottleDefectPredictor(model_path=model_path)
 
 predictor = get_model()
 
 # Sidebar
-st.sidebar.title("🍾 System Status")
-if predictor is not None:
-    st.sidebar.success("✅ Model: MobileNetV3 (Loaded)")
-    st.sidebar.info(f"⚙️ Device: `{predictor.device}`")
-    st.sidebar.caption("Backbone: Pretrained MobileNetV3-Small Fine-Tuned for Industrial Bottle Defect Inspection")
-else:
-    st.sidebar.error("⚠️ Model checkpoint not found.")
-    st.sidebar.warning("Run `python src/train.py` to train the model first.")
+st.sidebar.title("🍾 System Monitor")
+st.sidebar.success("✅ Framework: TensorFlow 2.x")
+st.sidebar.info(f"⚙️ Backbone: MobileNetV3 ({predictor.device})")
+st.sidebar.caption("Leak-Free Group Split & Pure YOLO Label Parsing")
 
 st.sidebar.markdown("---")
-st.sidebar.subheader("📌 Inspection Guidelines")
+st.sidebar.subheader("📌 Inspection Classes")
 st.sidebar.markdown("""
-- **Normal**: Good cap, properly sealed bottle.
-- **Defective**: Open cap, misaligned, or missing cap.
-- **Target Response Time**: < 30ms / product image.
+- **Normal (0)**: Good cap, properly sealed bottle.
+- **Defective (1)**: Open cap, missing cap, defective seal.
+- **Processing Time**: < 20 ms / product.
 """)
 
 # Main Title
 st.markdown('<div class="main-title">Industrial Bottle Visual Defect Detection</div>', unsafe_allow_html=True)
-st.markdown('<div class="sub-title">Real-time Automated Quality Assurance System powered by MobileNetV3 & PyTorch</div>', unsafe_allow_html=True)
+st.markdown('<div class="sub-title">100% TensorFlow 2.x & MobileNetV3 Computer Vision Quality Control</div>', unsafe_allow_html=True)
 
-tabs = st.tabs(["🔍 Live Single Inspection", "📦 Batch Test Inspection", "📊 Evaluation & Model Analytics"])
+tabs = st.tabs(["🔍 Live Single Inspection", "📦 Leak-Free Test Evaluation", "📊 Model Performance & Analytics"])
 
 # TAB 1: Live Single Inspection
 with tabs[0]:
@@ -102,7 +88,7 @@ with tabs[0]:
     col1, col2 = st.columns([1, 1], gap="large")
 
     with col1:
-        input_source = st.radio("Select Image Source:", ["Upload Custom Image", "Select from Test Set Sample"], horizontal=True)
+        input_source = st.radio("Select Image Source:", ["Upload Custom Image", "Pick Sample from Dataset"], horizontal=True)
         selected_img = None
         
         if input_source == "Upload Custom Image":
@@ -112,7 +98,7 @@ with tabs[0]:
         else:
             sample_images = glob.glob("dataset/test/images/*.*") + glob.glob("dataset/valid/images/*.*")
             if sample_images:
-                sample_names = [os.path.basename(p) for p in sample_images[:15]]
+                sample_names = [os.path.basename(p) for p in sample_images[:20]]
                 chosen_idx = st.selectbox("Choose Sample Image:", range(len(sample_names)), format_func=lambda x: sample_names[x])
                 selected_path = sample_images[chosen_idx]
                 selected_img = Image.open(selected_path).convert("RGB")
@@ -126,96 +112,92 @@ with tabs[0]:
     with col2:
         st.markdown("### Quality Inspection Result")
         if selected_img is not None:
-            if predictor is None:
-                st.error("Please train the model first to perform inference.")
+            with st.spinner("Running TensorFlow inference..."):
+                result = predictor.predict(selected_img)
+
+            # Prediction Status Banner
+            if result["is_defective"]:
+                st.markdown(f'<div class="status-defective">🚨 DEFECTIVE PRODUCT DETECTED<br><span style="font-size: 1rem; font-weight: normal;">Confidence: {result["confidence"]:.1%}</span></div>', unsafe_allow_html=True)
             else:
-                with st.spinner("Analyzing image features..."):
-                    result = predictor.predict(selected_img)
+                st.markdown(f'<div class="status-normal">✅ NORMAL / PASSED QUALITY INSPECTION<br><span style="font-size: 1rem; font-weight: normal;">Confidence: {result["confidence"]:.1%}</span></div>', unsafe_allow_html=True)
 
-                # Prediction Status Banner
-                if result["is_defective"]:
-                    st.markdown(f'<div class="status-defective">🚨 DEFECTIVE PRODUCT DETECTED<br><span style="font-size: 1rem; font-weight: normal;">Confidence: {result["confidence"]:.1%}</span></div>', unsafe_allow_html=True)
-                else:
-                    st.markdown(f'<div class="status-normal">✅ NORMAL / PASSED QUALITY INSPECTION<br><span style="font-size: 1rem; font-weight: normal;">Confidence: {result["confidence"]:.1%}</span></div>', unsafe_allow_html=True)
+            st.markdown("<br>", unsafe_allow_html=True)
 
-                st.markdown("<br>", unsafe_allow_html=True)
+            # Metrics row
+            m1, m2, m3 = st.columns(3)
+            m1.metric("Predicted State", result["prediction"])
+            m2.metric("Confidence", f"{result['confidence']:.2%}")
+            m3.metric("Latency", f"{result['inference_time_ms']} ms")
 
-                # Metrics row
-                m1, m2, m3 = st.columns(3)
-                m1.metric("Predicted State", result["prediction"])
-                m2.metric("Confidence", f"{result['confidence']:.2%}")
-                m3.metric("Latency", f"{result['inference_time_ms']} ms")
+            st.markdown("#### Class Probability Distribution")
+            probs_df = pd.DataFrame({
+                "Class": list(result["probabilities"].keys()),
+                "Probability": [v * 100 for v in result["probabilities"].values()]
+            })
+            st.bar_chart(probs_df.set_index("Class"), height=200)
 
-                st.markdown("#### Class Probability Distribution")
-                probs_df = pd.DataFrame({
-                    "Class": list(result["probabilities"].keys()),
-                    "Probability": [v * 100 for v in result["probabilities"].values()]
-                })
-                st.bar_chart(probs_df.set_index("Class"), height=200)
-
-                # JSON Output Expander
-                with st.expander("View Raw Inference Payload (FastAPI Standard)"):
-                    st.json(result)
+            with st.expander("View Raw Inference Payload (FastAPI Standard)"):
+                st.json(result)
         else:
             st.info("👈 Upload an image or select a sample from the left panel to begin inspection.")
 
-# TAB 2: Batch Inspection
+# TAB 2: Batch Leak-Free Test Evaluation
 with tabs[1]:
-    st.markdown("### Batch Test Set Evaluation")
-    test_images = glob.glob("dataset/test/images/*.*")
+    st.markdown("### Holdout Test Set Evaluation (Leak-Free)")
     
-    if not test_images:
-        st.warning("No images found in `dataset/test/images/`.")
-    else:
-        st.write(f"Found **{len(test_images)}** unannotated test images in manufacturing batch.")
+    manifest_path = "models/split_manifest.json"
+    if os.path.exists(manifest_path):
+        with open(manifest_path, "r") as f:
+            manifest = json.load(f)
+        test_images = manifest["split_paths"]["test"]
+        test_labels = manifest["split_labels"]["test"]
+        st.write(f"Found **{len(test_images)}** holdout test samples with **zero data leakage**.")
         
-        if st.button("🚀 Run Batch Inspection on All Test Samples"):
-            if predictor is None:
-                st.error("Model not loaded. Please train model first.")
-            else:
-                progress_bar = st.progress(0)
-                results_list = []
-                
-                for idx, img_path in enumerate(test_images):
-                    res = predictor.predict(img_path)
-                    res["filename"] = os.path.basename(img_path)
-                    res["image_path"] = img_path
-                    results_list.append(res)
-                    progress_bar.progress((idx + 1) / len(test_images))
-                
-                df_results = pd.DataFrame(results_list)
-                
-                # Batch Summary Metrics
-                total = len(df_results)
-                defective_count = int(df_results["is_defective"].sum())
-                normal_count = total - defective_count
-                defect_rate = (defective_count / total) * 100
-                avg_latency = df_results["inference_time_ms"].mean()
+        if st.button("🚀 Run Batch Inspection on Holdout Test Set"):
+            progress_bar = st.progress(0)
+            results_list = []
+            
+            for idx, (img_path, true_lbl) in enumerate(zip(test_images, test_labels)):
+                res = predictor.predict(img_path)
+                res["filename"] = os.path.basename(img_path)
+                res["image_path"] = img_path
+                res["true_class"] = "Defective" if true_lbl == 1 else "Normal"
+                res["is_correct"] = bool(res["class_id"] == true_lbl)
+                results_list.append(res)
+                progress_bar.progress((idx + 1) / len(test_images))
+            
+            df_results = pd.DataFrame(results_list)
+            
+            total = len(df_results)
+            correct_count = int(df_results["is_correct"].sum())
+            acc = (correct_count / total) * 100
+            defective_count = int(df_results["is_defective"].sum())
+            avg_latency = df_results["inference_time_ms"].mean()
 
-                b1, b2, b3, b4 = st.columns(4)
-                b1.metric("Total Inspected", total)
-                b2.metric("Normal (Passed)", normal_count)
-                b3.metric("Defective (Rejected)", defective_count)
-                b4.metric("Defect Rate", f"{defect_rate:.1f}%")
-                
-                st.markdown(f"**Average Latency per Product:** `{avg_latency:.2f} ms`")
-                st.markdown("---")
-                
-                # Image Gallery Grid
-                st.markdown("#### Inspection Gallery")
-                cols = st.columns(4)
-                for i, r in enumerate(results_list):
-                    col = cols[i % 4]
-                    with col:
-                        thumb = Image.open(r["image_path"]).resize((200, 200))
-                        badge = "🚨 DEFECTIVE" if r["is_defective"] else "✅ NORMAL"
-                        st.image(thumb, caption=f"{r['filename']}\n{badge} ({r['confidence']:.1%})", use_column_width=True)
+            b1, b2, b3, b4 = st.columns(4)
+            b1.metric("Total Tested", total)
+            b2.metric("Accuracy", f"{acc:.1f}%")
+            b3.metric("Defects Found", defective_count)
+            b4.metric("Avg Latency", f"{avg_latency:.2f} ms")
+            
+            st.markdown("---")
+            st.markdown("#### Test Sample Predictions Gallery")
+            cols = st.columns(4)
+            for i, r in enumerate(results_list):
+                col = cols[i % 4]
+                with col:
+                    thumb = Image.open(r["image_path"]).resize((200, 200))
+                    status_icon = "✅" if r["is_correct"] else "❌"
+                    badge = f"{status_icon} Pred: {r['prediction']} (True: {r['true_class']})"
+                    st.image(thumb, caption=f"{r['filename']}\n{badge} ({r['confidence']:.1%})", use_column_width=True)
+    else:
+        st.info("Run `python src/train.py` to generate the leak-free split manifest.")
 
-# TAB 3: Evaluation & Model Analytics
+# TAB 3: Model Performance & Analytics
 with tabs[2]:
     st.markdown("### Model Performance & Evaluation Metrics")
     
-    split_choice = st.radio("Select Evaluation Dataset to Inspect:", ["Holdout Test Set (30 Images)", "Validation Set (40 Images)"], horizontal=True)
+    split_choice = st.radio("Select Dataset Split to Inspect:", ["Holdout Test Set", "Validation Set"], horizontal=True)
     selected_split = "test" if "Test" in split_choice else "valid"
 
     col_a, col_b = st.columns(2)
@@ -226,13 +208,13 @@ with tabs[2]:
         if os.path.exists(cm_path):
             st.image(cm_path, caption=f"Confusion Matrix ({selected_split.capitalize()} Set)", use_column_width=True)
         else:
-            st.info(f"Run `python src/evaluate.py --split {selected_split}` to generate the Confusion Matrix.")
+            st.info(f"Run `python src/evaluate.py --split {selected_split}` to generate Confusion Matrix.")
             
     with col_b:
         st.markdown("#### Training & Validation Learning Curves")
         curves_path = "models/training_curves.png"
         if os.path.exists(curves_path):
-            st.image(curves_path, caption="Training & Validation Loss / F1 Curves", use_column_width=True)
+            st.image(curves_path, caption="TensorFlow Loss & Accuracy Curves", use_column_width=True)
         else:
             st.info("Training curves will appear after running `python src/train.py`.")
 

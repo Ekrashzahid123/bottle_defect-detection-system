@@ -59,7 +59,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 1.5418181328893875e-19,
+            "prob_defective": 1.0346936848981692e-11,
             "correct": true
         },
         {
@@ -69,7 +69,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 1.5664943300852663e-13,
+            "prob_defective": 6.407930030371449e-15,
             "correct": true
         },
         {
@@ -79,7 +79,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 7.480109906894549e-18,
+            "prob_defective": 2.7152010046789796e-17,
             "correct": true
         },
         {
@@ -87,9 +87,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1129_jpg.rf.e3b25e00472c15333b68a70b6b109ce4.jpg",
             "true_class": "Normal",
             "predicted_class": "Normal",
-            "confidence": 1.0,
-            "prob_normal": 1.0,
-            "prob_defective": 7.2629591230111146e-09,
+            "confidence": 0.9999792575836182,
+            "prob_normal": 0.9999792575836182,
+            "prob_defective": 2.0729981770273298e-05,
             "correct": true
         },
         {
@@ -99,7 +99,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 1.5839999981226535e-15,
+            "prob_defective": 5.827099633164915e-16,
             "correct": true
         },
         {
@@ -109,7 +109,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 1.9261087175243441e-16,
+            "prob_defective": 1.2924779392155619e-15,
             "correct": true
         },
         {
@@ -119,7 +119,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 1.546234386189116e-13,
+            "prob_defective": 5.625351631721991e-15,
             "correct": true
         },
         {
@@ -129,7 +129,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 5.953120268615124e-17,
+            "prob_defective": 9.799534447796354e-12,
             "correct": true
         },
         {
@@ -139,7 +139,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 3.5102963488510534e-20,
+            "prob_defective": 1.5982364737210375e-11,
             "correct": true
         },
         {
@@ -149,7 +149,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 2.4259441852560384e-19,
+            "prob_defective": 3.648878508372144e-12,
             "correct": true
         },
         {
@@ -159,7 +159,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 1.7455383661775704e-17,
+            "prob_defective": 1.5865983526985872e-10,
             "correct": true
         },
         {
@@ -169,7 +169,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 2.856403547655864e-17,
+            "prob_defective": 8.580931520896229e-10,
             "correct": true
         },
         {
@@ -179,7 +179,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 3.193603207375223e-19,
+            "prob_defective": 1.1628869742152936e-11,
             "correct": true
         },
         {
@@ -189,7 +189,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 1.1655313457935424e-19,
+            "prob_defective": 2.6225524098828952e-14,
             "correct": true
         },
         {
@@ -199,7 +199,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 8.474083522565234e-15,
+            "prob_defective": 5.084322199366831e-11,
             "correct": true
         },
         {
@@ -209,7 +209,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 4.624784645415429e-14,
+            "prob_defective": 5.175341755148111e-08,
             "correct": true
         },
         {
@@ -219,7 +219,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 3.777042731584277e-15,
+            "prob_defective": 1.4514154322853301e-08,
             "correct": true
         },
         {
@@ -229,7 +229,7 @@
             "predicted_class": "Normal",
             "confidence": 1.0,
             "prob_normal": 1.0,
-            "prob_defective": 6.413509182285129e-14,
+            "prob_defective": 2.9226770337231756e-08,
             "correct": true
         },
         {
@@ -237,9 +237,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1425_jpg.rf.0a31ee409691f0a179c207e9841b8764.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 1.0,
-            "prob_normal": 3.584691290141719e-15,
-            "prob_defective": 1.0,
+            "confidence": 0.9999910593032837,
+            "prob_normal": 8.893047379388008e-06,
+            "prob_defective": 0.9999910593032837,
             "correct": true
         },
         {
@@ -247,9 +247,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1448_jpg.rf.2dba5be32d776c21bceb2fe30fc2110a.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 0.9999744892120361,
-            "prob_normal": 2.548365227994509e-05,
-            "prob_defective": 0.9999744892120361,
+            "confidence": 1.0,
+            "prob_normal": 6.466138735561344e-11,
+            "prob_defective": 1.0,
             "correct": true
         },
         {
@@ -257,9 +257,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1449_jpg.rf.9194f8f64a660c1e2ad6e7b10285e7c2.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 0.999075174331665,
-            "prob_normal": 0.0009248427813872695,
-            "prob_defective": 0.999075174331665,
+            "confidence": 1.0,
+            "prob_normal": 4.3793435544614567e-10,
+            "prob_defective": 1.0,
             "correct": true
         },
         {
@@ -267,9 +267,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1452_jpg.rf.ef4bd50d085c5a041fc0c8032f0d059f.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 0.9975179433822632,
-            "prob_normal": 0.002482031239196658,
-            "prob_defective": 0.9975179433822632,
+            "confidence": 0.9999998807907104,
+            "prob_normal": 1.6074646680408478e-07,
+            "prob_defective": 0.9999998807907104,
             "correct": true
         },
         {
@@ -277,9 +277,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1461_jpg.rf.37f7c5a4df4e80eb9af3bd0c38cbb3d0.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 1.0,
-            "prob_normal": 5.19238518847942e-09,
-            "prob_defective": 1.0,
+            "confidence": 0.9999997615814209,
+            "prob_normal": 2.8734555712617293e-07,
+            "prob_defective": 0.9999997615814209,
             "correct": true
         },
         {
@@ -288,7 +288,7 @@
             "true_class": "Defective",
             "predicted_class": "Defective",
             "confidence": 1.0,
-            "prob_normal": 6.239938197700741e-16,
+            "prob_normal": 3.929478076258874e-09,
             "prob_defective": 1.0,
             "correct": true
         },
@@ -297,9 +297,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1469_jpg.rf.2329db94ad9b4d1a36619aeb7548e33f.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 1.0,
-            "prob_normal": 1.1512072406461016e-09,
-            "prob_defective": 1.0,
+            "confidence": 0.9999850988388062,
+            "prob_normal": 1.4924185052223038e-05,
+            "prob_defective": 0.9999850988388062,
             "correct": true
         },
         {
@@ -307,9 +307,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1473_jpg.rf.478dc5dee01b1ad50fe7a9dbd5340564.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 1.0,
-            "prob_normal": 1.2018797068691356e-09,
-            "prob_defective": 1.0,
+            "confidence": 0.9999940395355225,
+            "prob_normal": 5.917536782362731e-06,
+            "prob_defective": 0.9999940395355225,
             "correct": true
         },
         {
@@ -317,9 +317,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1475_jpg.rf.2c332dbbc9fe5e40e674f898cd35c005.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 1.0,
-            "prob_normal": 9.569184555857646e-09,
-            "prob_defective": 1.0,
+            "confidence": 0.9999909400939941,
+            "prob_normal": 9.003470950119663e-06,
+            "prob_defective": 0.9999909400939941,
             "correct": true
         },
         {
@@ -328,7 +328,7 @@
             "true_class": "Defective",
             "predicted_class": "Defective",
             "confidence": 1.0,
-            "prob_normal": 2.1842480601996783e-10,
+            "prob_normal": 1.2341655475367475e-09,
             "prob_defective": 1.0,
             "correct": true
         },
@@ -338,7 +338,7 @@
             "true_class": "Defective",
             "predicted_class": "Defective",
             "confidence": 1.0,
-            "prob_normal": 1.234229515464924e-12,
+            "prob_normal": 1.4136044765300504e-13,
             "prob_defective": 1.0,
             "correct": true
         },
@@ -348,7 +348,7 @@
             "true_class": "Defective",
             "predicted_class": "Defective",
             "confidence": 1.0,
-            "prob_normal": 2.6997322309158705e-15,
+            "prob_normal": 5.3925200622136765e-15,
             "prob_defective": 1.0,
             "correct": true
         },
@@ -358,7 +358,7 @@
             "true_class": "Defective",
             "predicted_class": "Defective",
             "confidence": 1.0,
-            "prob_normal": 2.3723998226080188e-17,
+            "prob_normal": 9.630466996785048e-13,
             "prob_defective": 1.0,
             "correct": true
         },
@@ -368,7 +368,7 @@
             "true_class": "Defective",
             "predicted_class": "Defective",
             "confidence": 1.0,
-            "prob_normal": 3.954286460292383e-18,
+            "prob_normal": 5.836899973771237e-12,
             "prob_defective": 1.0,
             "correct": true
         },
@@ -378,7 +378,7 @@
             "true_class": "Defective",
             "predicted_class": "Defective",
             "confidence": 1.0,
-            "prob_normal": 1.604506394414784e-08,
+            "prob_normal": 9.302953372924971e-14,
             "prob_defective": 1.0,
             "correct": true
         },
@@ -387,9 +387,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1521_jpg.rf.88ff9e567e8cef0b06eeaad2f1535583.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 1.0,
-            "prob_normal": 2.166862149436965e-17,
-            "prob_defective": 1.0,
+            "confidence": 0.9999740123748779,
+            "prob_normal": 2.604496148705948e-05,
+            "prob_defective": 0.9999740123748779,
             "correct": true
         },
         {
@@ -397,9 +397,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1522_jpg.rf.aa23a601fa6e2cad287a1f69ff6e29f3.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 1.0,
-            "prob_normal": 5.466785383164982e-18,
-            "prob_defective": 1.0,
+            "confidence": 0.9999737739562988,
+            "prob_normal": 2.619253791635856e-05,
+            "prob_defective": 0.9999737739562988,
             "correct": true
         },
         {
@@ -407,9 +407,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1523_jpg.rf.e4b3084d2061f084c84ec77632d0850f.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 1.0,
-            "prob_normal": 1.5146140236988966e-16,
-            "prob_defective": 1.0,
+            "confidence": 0.9999796152114868,
+            "prob_normal": 2.040266372205224e-05,
+            "prob_defective": 0.9999796152114868,
             "correct": true
         },
         {
@@ -418,7 +418,7 @@
             "true_class": "Defective",
             "predicted_class": "Defective",
             "confidence": 1.0,
-            "prob_normal": 2.1456873611214178e-08,
+            "prob_normal": 3.6923602738693495e-13,
             "prob_defective": 1.0,
             "correct": true
         },
@@ -427,9 +427,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1528_jpg.rf.a509616caba2556b66f34536fbf8f133.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 0.9999504089355469,
-            "prob_normal": 4.964536856277846e-05,
-            "prob_defective": 0.9999504089355469,
+            "confidence": 1.0,
+            "prob_normal": 2.4434901530531045e-14,
+            "prob_defective": 1.0,
             "correct": true
         },
         {
@@ -437,9 +437,9 @@
             "image_path": "dataset\\valid\\images\\IMG_1532_jpg.rf.93a5ddd6efd0f55fad84c0197c9707b2.jpg",
             "true_class": "Defective",
             "predicted_class": "Defective",
-            "confidence": 0.999997615814209,
-            "prob_normal": 2.3830241389077855e-06,
-            "prob_defective": 0.999997615814209,
+            "confidence": 1.0,
+            "prob_normal": 2.591628084011588e-14,
+            "prob_defective": 1.0,
             "correct": true
         },
         {
@@ -448,7 +448,7 @@
             "true_class": "Defective",
             "predicted_class": "Defective",
             "confidence": 1.0,
-            "prob_normal": 3.5783469286634895e-14,
+            "prob_normal": 7.559743941953911e-10,
             "prob_defective": 1.0,
             "correct": true
         }

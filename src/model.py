@@ -1,59 +1,37 @@
-import torch
-import torch.nn as nn
-from torchvision.models import (
-    mobilenet_v3_small,
-    mobilenet_v3_large,
-    MobileNet_V3_Small_Weights,
-    MobileNet_V3_Large_Weights
-)
+import tensorflow as tf
+from tensorflow.keras import layers, models
 
-class BottleDefectClassifier(nn.Module):
+def create_model(num_classes: int = 2, variant: str = "small", dropout: float = 0.25, input_shape=(224, 224, 3)):
     """
-    MobileNetV3 transfer learning model for bottle visual defect classification.
+    Pure TensorFlow / Keras MobileNetV3 Transfer Learning Model.
     
-    Why MobileNetV3?
-    1. Edge & Production Ready: Tailored for fast CPU/edge inference with low latency (5-15ms).
-    2. High Efficiency: Utilizes Hard-Swish activations and Squeeze-and-Excitation attention modules.
-    3. Strong Generalization: Fine-tuning pretrained ImageNet backbone provides rapid convergence
-       even on small manufacturing datasets.
+    Why MobileNetV3 in TensorFlow?
+    1. Optimized Depthwise Separable Convolutions & Squeeze-and-Excitation attention.
+    2. Hard-Swish activations for rapid CPU inference in industrial deployment (<15ms).
+    3. Seamless export to TFLite / SavedModel format.
     """
-    def __init__(self, num_classes: int = 2, variant: str = "small", pretrained: bool = True, dropout: float = 0.2):
-        super(BottleDefectClassifier, self).__init__()
-        self.variant = variant.lower()
-        self.num_classes = num_classes
-
-        if self.variant == "large":
-            weights = MobileNet_V3_Large_Weights.DEFAULT if pretrained else None
-            self.backbone = mobilenet_v3_large(weights=weights)
-            in_features = self.backbone.classifier[0].in_features
-            last_channel = self.backbone.classifier[0].out_features
-        else:
-            weights = MobileNet_V3_Small_Weights.DEFAULT if pretrained else None
-            self.backbone = mobilenet_v3_small(weights=weights)
-            in_features = self.backbone.classifier[0].in_features
-            last_channel = self.backbone.classifier[0].out_features
-
-        # Replace classification head with custom dropout and linear projection for 2 classes
-        self.backbone.classifier = nn.Sequential(
-            nn.Linear(in_features, last_channel),
-            nn.Hardswish(inplace=True),
-            nn.Dropout(p=dropout, inplace=True),
-            nn.Linear(last_channel, num_classes)
+    if variant.lower() == "large":
+        base_model = tf.keras.applications.MobileNetV3Large(
+            input_shape=input_shape,
+            include_top=False,
+            weights="imagenet",
+            pooling="avg"
+        )
+    else:
+        base_model = tf.keras.applications.MobileNetV3Small(
+            input_shape=input_shape,
+            include_top=False,
+            weights="imagenet",
+            pooling="avg"
         )
 
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        return self.backbone(x)
+    base_model.trainable = True
 
-    def get_trainable_params(self):
-        return [p for p in self.parameters() if p.requires_grad]
+    inputs = layers.Input(shape=input_shape, name="image_input")
+    x = tf.keras.applications.mobilenet_v3.preprocess_input(inputs)
+    x = base_model(x)
+    x = layers.Dropout(dropout, name="dropout_regularization")(x)
+    outputs = layers.Dense(num_classes, activation="softmax", name="defect_probabilities")(x)
 
-def create_model(num_classes: int = 2, variant: str = "small", pretrained: bool = True, dropout: float = 0.2) -> BottleDefectClassifier:
-    """
-    Factory function to instantiate MobileNetV3 model.
-    """
-    return BottleDefectClassifier(
-        num_classes=num_classes,
-        variant=variant,
-        pretrained=pretrained,
-        dropout=dropout
-    )
+    model = models.Model(inputs=inputs, outputs=outputs, name=f"Bottle_MobileNetV3_{variant.capitalize()}")
+    return model

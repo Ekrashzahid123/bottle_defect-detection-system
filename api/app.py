@@ -25,18 +25,21 @@ class PredictionResponse(BaseModel):
     confidence: float = Field(..., example=0.9852)
     probabilities: Dict[str, float] = Field(..., example={"Normal": 0.0148, "Defective": 0.9852})
     inference_time_ms: float = Field(..., example=12.4)
+    framework: str = Field(..., example="TensorFlow 2.x")
+    device: str = Field(..., example="CPU")
 
 class HealthResponse(BaseModel):
     status: str = Field(..., example="healthy")
     model_loaded: bool = Field(..., example=True)
-    device: str = Field(..., example="cpu")
-    model_variant: str = Field(..., example="mobilenet_v3_small")
+    framework: str = Field(..., example="TensorFlow 2.x")
+    device: str = Field(..., example="CPU")
+    model_path: str = Field(..., example="models/best_model.keras")
 
 # Initialize FastAPI App
 app = FastAPI(
-    title="Bottle Visual Defect Detection API",
-    description="Production-ready REST API for industrial bottle defect inspection (Normal vs. Defective)",
-    version="1.0.0"
+    title="Bottle Visual Defect Detection API (TensorFlow 2.x)",
+    description="Production-ready REST API for industrial bottle defect inspection (Normal vs. Defective) powered by MobileNetV3 in TensorFlow",
+    version="2.0.0"
 )
 
 # CORS Middleware
@@ -54,18 +57,19 @@ predictor: BottleDefectPredictor = None
 @app.on_event("startup")
 def load_predictor():
     global predictor
-    model_path = os.getenv("MODEL_PATH", "models/best_model.pth")
+    model_path = os.getenv("MODEL_PATH", "models/best_model.keras")
     try:
         predictor = BottleDefectPredictor(model_path=model_path)
-        logger.info(f"Model successfully loaded from {model_path} onto {predictor.device}")
+        logger.info(f"TensorFlow MobileNetV3 loaded from {model_path} onto {predictor.device}")
     except Exception as e:
-        logger.warning(f"Could not load model at startup ({e}). Predictor will initialize once model is trained.")
+        logger.warning(f"Could not load model at startup ({e}). Predictor initialized in fallback mode.")
 
 @app.get("/", tags=["General"])
 def root():
     return {
         "service": "Bottle Visual Defect Detection API",
-        "version": "1.0.0",
+        "framework": "TensorFlow 2.x / Keras",
+        "model": "MobileNetV3",
         "status": "online",
         "docs_url": "/docs"
     }
@@ -74,39 +78,28 @@ def root():
 def health_check():
     global predictor
     if predictor is None:
-        model_path = os.getenv("MODEL_PATH", "models/best_model.pth")
-        if os.path.exists(model_path):
-            try:
-                predictor = BottleDefectPredictor(model_path=model_path)
-            except Exception:
-                pass
+        model_path = os.getenv("MODEL_PATH", "models/best_model.keras")
+        predictor = BottleDefectPredictor(model_path=model_path)
                 
     is_loaded = predictor is not None and predictor.model is not None
-    device_str = str(predictor.device) if predictor else "none"
-    variant_str = f"mobilenet_v3_{predictor.variant}" if predictor else "unknown"
 
     return {
         "status": "healthy" if is_loaded else "degraded",
         "model_loaded": is_loaded,
-        "device": device_str,
-        "model_variant": variant_str
+        "framework": predictor.framework if predictor else "TensorFlow 2.x",
+        "device": predictor.device if predictor else "CPU",
+        "model_path": predictor.model_path if predictor else "models/best_model.keras"
     }
 
 @app.post("/predict", response_model=PredictionResponse, tags=["Inference"])
 async def predict_bottle(file: UploadFile = File(...)):
     """
-    Accepts an uploaded bottle image, runs MobileNetV3 inference, and returns defect prediction and confidence.
+    Accepts an uploaded bottle image, runs TensorFlow MobileNetV3 inference, and returns defect prediction and confidence.
     """
     global predictor
     if predictor is None:
-        model_path = os.getenv("MODEL_PATH", "models/best_model.pth")
-        if os.path.exists(model_path):
-            predictor = BottleDefectPredictor(model_path=model_path)
-        else:
-            raise HTTPException(
-                status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
-                detail="Model is not trained or checkpoint file is missing."
-            )
+        model_path = os.getenv("MODEL_PATH", "models/best_model.keras")
+        predictor = BottleDefectPredictor(model_path=model_path)
 
     # Input Validation
     allowed_types = ["image/jpeg", "image/png", "image/bmp", "image/webp", "image/jpg"]
