@@ -1,25 +1,7 @@
-# 🍾 Industrial Bottle Defect Detection System (100% Pure TensorFlow 2.x)
+# 🍾 Industrial Bottle Defect Detection System 
 
 A production-ready, leak-free, and defensible Computer Vision system to detect **Normal** vs. **Defective** bottles on a manufacturing production line. Built entirely in **TensorFlow 2.x / Keras**, **MobileNetV3**, **FastAPI**, and **Streamlit**.
 
----
-
-## 📋 Table of Contents
-1. [Core Architectural Decisions & Integrity Fixes](#-core-architectural-decisions--integrity-fixes)
-2. [Dataset Statistics & Total Sample Distribution](#-dataset-statistics--total-sample-distribution)
-3. [Model Selection & Rationale](#-model-selection--rationale)
-4. [Evaluation Results & Classification Reports](#-evaluation-results--classification-reports)
-5. [Project Structure](#-project-structure)
-6. [Quick Start & Setup Instructions](#-quick-start--setup-instructions)
-7. [Training in TensorFlow](#-training-in-tensorflow)
-8. [Evaluation & Confusion Matrix Analysis](#-evaluation--confusion-matrix-analysis)
-9. [FastAPI Production Service](#-fastapi-production-service)
-10. [Streamlit Interactive Dashboard](#-streamlit-interactive-dashboard)
-11. [Docker Deployment](#-docker-deployment)
-12. [Known Limitations & Future Improvements](#-known-limitations--future-improvements)
-13. [Interview Defense Cheat-Sheet](#-interview-defense-cheat-sheet)
-
----
 
 ## 🛡️ Core Architectural Decisions & Integrity Fixes
 
