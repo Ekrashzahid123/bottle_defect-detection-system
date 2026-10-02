@@ -242,21 +242,7 @@ docker run -p 8000:8000 bottle-defect-detector-tf:latest
 
 ---
 
-## ⚠️ Known Limitations & Future Improvements
 
-1. **Extreme Lighting & Glare**: Strong specular reflections on metallic bottle caps can occasionally obscure seal edges. Dedicated polarized ring lights on conveyor belts resolve this.
-2. **INT8 Quantization (TFLite)**: Quantizing weights reduces model size to ~2.5 MB and cuts CPU inference to <5ms for low-cost embedded hardware (Raspberry Pi / Coral TPU).
-3. **Active Learning Review Queue**: Borderline confidence predictions ($45\% < \text{conf} < 55\%$) are routed to human operators and saved for automated retraining cycles.
-
----
-
-## 🎓 Interview Defense Cheat-Sheet
-
-### Q1: How did you ensure there is no data leakage across splits?
-> **Answer**: *"Roboflow creates 3 augmented variations per base image. If you use a random train/test split, augmented copies of the same bottle end up in both train and test, which artifically inflates performance. We solved this by implementing `GroupShuffleSplit` on the base image ID (`IMG_XXXX`), guaranteeing that all augmentations of a physical bottle stay strictly inside the same partition."*
-
-### Q2: How did you handle labeling and multi-object edge cases?
-> **Answer**: *"We do not rely on filename heuristics. All labels are parsed directly from the YOLO annotation text files. If an image contains multiple objects, we apply industrial QA logic: if **any** bounding box contains class `1` (open cap / defect), the entire product is classified as Defective. If all boxes are class `0`, it is classified as Normal."*
 
 ### Q3: Why is MobileNetV3 in TensorFlow ideal for this factory deployment?
 > **Answer**: *"MobileNetV3 uses depthwise separable convolutions, Hard-Swish activations, and Squeeze-and-Excitation attention to deliver high accuracy with only ~2.5M parameters. In TensorFlow, it converts directly to TFLite for deployment onto edge hardware (e.g. Raspberry Pi / Jetson) with sub-15ms inference per bottle."*
